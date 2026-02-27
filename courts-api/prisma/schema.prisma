@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Court {
+  id       Int       @id @default(autoincrement())
+  name     String
+  bookings Booking[]
+}
+
+model Booking {
+  id          String   @id @default(uuid())
+  courtId     Int
+  date        String
+  startHour   Int
+  endHour     Int
+  peopleCount Int
+  totalPrice  Int
+  token       String   @unique
+  createdAt   DateTime @default(now())
+
+  usedAt      DateTime?   // ✅ nuevo
+  
+  court       Court    @relation(fields: [courtId], references: [id])
+
+  @@index([courtId, date])
+}
+
+enum Role {
+  ADMIN
+  STAFF
+}
+
+model User {
+  id               String   @id @default(uuid())
+  email            String   @unique
+  passwordHash     String
+  role             Role     @default(STAFF)
+  isActive         Boolean  @default(true)
+
+  refreshTokenHash String?
+  lastLoginAt      DateTime?
+
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+
+
+
