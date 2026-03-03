@@ -8,6 +8,14 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project: [ courts-api, courts-web ]
+
+    defaults:
+      run:
+        working-directory: ${{ matrix.project }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -17,22 +25,10 @@ jobs:
         with:
           node-version: 20
           cache: npm
-          cache-dependency-path: |
-            courts-api/package-lock.json
-            courts-web/package-lock.json
+          cache-dependency-path: ${{ matrix.project }}/package-lock.json
 
-      - name: Install API
-        working-directory: courts-api
+      - name: Install
         run: npm ci
 
-      - name: Build API
-        working-directory: courts-api
-        run: npm run build
-
-      - name: Install Web
-        working-directory: courts-web
-        run: npm ci
-
-      - name: Build Web
-        working-directory: courts-web
+      - name: Build
         run: npm run build
