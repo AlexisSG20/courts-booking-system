@@ -57,6 +57,29 @@ async function main() {
     }
   }
 
+  // 3) Crear usuario STAFF inicial
+  const staffEmail = 'staff@courts.com';
+  const staffPassword = 'staff123';
+
+  const staffExists = await prisma.user.findUnique({ where: { email: staffEmail } });
+
+  if (staffExists) {
+    console.log(`Staff ya existe: ${staffEmail}`);
+  } else {
+    const staffHash = await argon2.hash(staffPassword);
+
+    await prisma.user.create({
+      data: {
+        email: staffEmail,
+        passwordHash: staffHash,
+        role: Role.STAFF,
+        isActive: true,
+      },
+    });
+
+    console.log(`✅ Staff creado: ${staffEmail}`);
+  }
+
   console.log('Seeding completed!');
 }
 
