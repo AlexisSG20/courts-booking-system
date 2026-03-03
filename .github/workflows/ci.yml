@@ -30,5 +30,9 @@ jobs:
       - name: Install
         run: npm ci
 
+      - name: Generate Prisma Client
+        if: matrix.project == 'courts-api'
+        run: npx prisma generate
+
       - name: Build
         run: npm run build
