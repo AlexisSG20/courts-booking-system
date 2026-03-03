@@ -1,12 +1,19 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { BrowserMultiFormatReader } from "@zxing/browser";
 import { apiFetch } from "../lib/api";
-
+import { getMe } from "../lib/me";
+import {
+  login as authLogin,
+  logout as authLogout,
+  getAccessToken,
+} from "../lib/auth";
 
 
 const API = "/api"; // usando proxy de Vite
 
-export default function ValidateBooking() {
+export default function ValidateBooking({ onAuthChange }) {
+  const navigate = useNavigate();
   const scannedRef = useRef(false);
   const readerRef = useRef(null);
   const videoRef = useRef(null);
@@ -21,6 +28,56 @@ export default function ValidateBooking() {
   const [booking, setBooking] = useState(null);
   const [error, setError] = useState("");
 
+  // ===== Auth (para STAFF/ADMIN) =====
+  const [me, setMe] = useState(null);
+  const [authLoading, setAuthLoading] = useState(false);
+  const [email, setEmail] = useState("admin@courts.com");
+  const [password, setPassword] = useState("");
+
+  const loadMe = async () => {
+    if (!getAccessToken()) {
+      setMe(null);
+      return;
+    }
+    const u = await getMe();
+    setMe(u);
+  };
+
+  useEffect(() => {
+    loadMe();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const doLogin = async () => {
+    setError("");
+    setAuthLoading(true);
+    try {
+      await authLogin(email, password);
+      await loadMe();
+      await onAuthChange?.();
+      setPassword("");
+    } catch (e) {
+      setError(`⚠️ ${e?.message ?? "Error al iniciar sesión"}`);
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
+  const doLogout = async () => {
+    setError("");
+    setAuthLoading(true);
+    try {
+      await authLogout();
+      setMe(null);
+      await onAuthChange?.();
+    } catch {
+      setMe(null);
+      await onAuthChange?.();
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
   const validate = async (maybeToken) => {
     const t = String(maybeToken ?? token).trim();
     setError("");
@@ -34,6 +91,11 @@ export default function ValidateBooking() {
     setLoading(true);
     try {
       const res = await apiFetch(`/bookings/by-token/${t}`);
+
+      if (res.status === 401 || res.status === 403) {
+        setError("🔒 No autorizado. Inicia sesión como STAFF/ADMIN.");
+        return;
+      }
 
       if (res.status === 404) {
         setError("❌ No existe una reserva con ese token.");
@@ -67,6 +129,11 @@ export default function ValidateBooking() {
       });
 
       const data = await res.json().catch(() => null);
+
+      if (res.status === 401 || res.status === 403) {
+        setError("🔒 No autorizado. Inicia sesión como STAFF/ADMIN.");
+        return;
+      }
 
       if (!res.ok) {
         setError(`⚠️ ${data?.message ?? `Error (${res.status})`}`);
@@ -169,6 +236,48 @@ export default function ValidateBooking() {
   return (
     <div style={{ fontFamily: "system-ui", padding: 24, maxWidth: 720 }}>
       <h1>Validar reserva</h1>
+
+      {/* ===== Login / Sesión ===== */}
+      <div style={{ marginTop: 12, padding: 12, border: "1px solid #444", borderRadius: 12 }}>
+        {me ? (
+          <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
+            <div style={{ opacity: 0.9 }}>
+              Sesión: <b>{me.email}</b> — Rol: <b>{me.role}</b>
+            </div>
+            <button onClick={doLogout} disabled={authLoading} style={{ padding: "8px 12px", borderRadius: 8 }}>
+              {authLoading ? "Saliendo..." : "Salir"}
+            </button>
+
+            {me.role === "ADMIN" && (
+              <button
+                onClick={() => navigate("/admin/bookings")}
+                style={{ padding: "8px 12px", borderRadius: 8, border: "1px solid #555" }}
+              >
+                Ir a Admin
+              </button>
+            )}
+          </div>
+        ) : (
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            <input
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
+              style={{ flex: 1, minWidth: 220, padding: 10, borderRadius: 8 }}
+            />
+            <input
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Contraseña"
+              type="password"
+              style={{ flex: 1, minWidth: 180, padding: 10, borderRadius: 8 }}
+            />
+            <button onClick={doLogin} disabled={authLoading} style={{ padding: "10px 14px", borderRadius: 8 }}>
+              {authLoading ? "Entrando..." : "Entrar"}
+            </button>
+          </div>
+        )}
+      </div>
 
       <div style={{ display: "flex", gap: 8, marginTop: 12, flexWrap: "wrap" }}>
         <input

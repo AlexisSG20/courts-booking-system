@@ -5,6 +5,7 @@ import { getAccessToken, login as authLogin, clearAccessToken } from "../lib/aut
 import { logout as authLogout } from "../lib/auth";
 
 
+
 const API = "/api";
 
 // Moneda
@@ -58,7 +59,7 @@ const formatLimaTime = (dt) => {
   return s ? s.slice(11, 19) : "";
 };
 
-export default function AdminBookings() {
+export default function AdminBookings({ onAuthChange }) {
   const [courts, setCourts] = useState([]);
   const [courtId, setCourtId] = useState(""); // string para <select>
   const [pending, setPending] = useState(false);
@@ -141,6 +142,7 @@ export default function AdminBookings() {
     try {
       await authLogin(email, password); // guarda accessToken en localStorage
       setAccessTokenState(getAccessToken());
+      await onAuthChange?.();
       await load();
     } catch (e) {
       clearAccessToken();
@@ -154,6 +156,7 @@ export default function AdminBookings() {
   const doLogout = async () => {
     await authLogout();        // pega a /auth/logout y limpia token (si tu auth.js lo hace)
     setAccessTokenState("");   // OJO: State con S mayúscula
+    await onAuthChange?.();
     setError("Sesión cerrada");
     setData({ count: 0, bookings: [] });
   };
