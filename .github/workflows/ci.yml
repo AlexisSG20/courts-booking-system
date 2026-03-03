@@ -8,7 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -18,13 +17,21 @@ jobs:
         with:
           node-version: 20
           cache: npm
+          cache-dependency-path: |
+            courts-api/package-lock.json
+            courts-web/package-lock.json
 
-      - name: Install (root)
+      - name: Install API
+        working-directory: courts-api
         run: npm ci
 
       - name: Build API
         working-directory: courts-api
         run: npm run build
+
+      - name: Install Web
+        working-directory: courts-web
+        run: npm ci
 
       - name: Build Web
         working-directory: courts-web
