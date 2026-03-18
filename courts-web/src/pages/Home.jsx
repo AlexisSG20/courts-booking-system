@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
-import QRCode from "react-qr-code";
+import HomeHero from "../components/home/HomeHero";
+import BookingFormCard from "../components/home/BookingFormCard";
+import BookingConfirmation from "../components/home/BookingConfirmation";
+import TimeSlots from "../components/home/TimeSlots";
+import BookedHours from "../components/home/BookedHours";
 
-'const API = "http://localhost:3000";'
- const API = "/api";
-
+const API = "/api";
 
 function todayYYYYMMDD() {
   const d = new Date();
@@ -40,18 +42,24 @@ export default function Home() {
     async function loadCourts() {
       setError("");
       setLoadingCourts(true);
+
       try {
         const res = await fetch(`${API}/courts`);
         if (!res.ok) throw new Error("Error al cargar courts");
+
         const data = await res.json();
         setCourts(data);
-        if (data.length > 0) setCourtId(String(data[0].id));
+
+        if (data.length > 0) {
+          setCourtId(String(data[0].id));
+        }
       } catch (e) {
         setError(e.message);
       } finally {
         setLoadingCourts(false);
       }
     }
+
     loadCourts();
   }, []);
 
@@ -60,6 +68,7 @@ export default function Home() {
 
     setError("");
     setLoadingAvail(true);
+
     try {
       const res = await fetch(
         `${API}/availability?courtId=${encodeURIComponent(
@@ -133,149 +142,45 @@ export default function Home() {
   }
 
   return (
-    <div style={{ fontFamily: "system-ui", padding: 24, maxWidth: 720 }}>
-      <h1>Reservas</h1>
+    <main className="min-h-screen bg-slate-950 text-white">
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 py-8 sm:px-6 lg:px-8">
+        <HomeHero />
 
-      {error && <p style={{ color: "crimson" }}>{error}</p>}
-
-      <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 16 }}>
-        <div>
-          <label style={{ display: "block", marginBottom: 6 }}>Cancha</label>
-          {loadingCourts ? (
-            <p>Cargando...</p>
-          ) : (
-            <select
-              value={courtId}
-              onChange={(e) => setCourtId(e.target.value)}
-              style={{ padding: 10, borderRadius: 8 }}
-            >
-              {courts.map((c) => (
-                <option key={c.id} value={c.id}>
-                  #{c.id} — {c.name}
-                </option>
-              ))}
-            </select>
-          )}
-        </div>
-
-        <div>
-          <label style={{ display: "block", marginBottom: 6 }}>Fecha</label>
-          <input
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            style={{ padding: 10, borderRadius: 8 }}
-          />
-        </div>
-
-        <div>
-          <label style={{ display: "block", marginBottom: 6 }}>Personas</label>
-          <input
-            type="number"
-            min={1}
-            value={peopleCount}
-            onChange={(e) => setPeopleCount(e.target.value)}
-            style={{ padding: 10, borderRadius: 8, width: 120 }}
-          />
-        </div>
-      </div>
-
-      {confirmation && (
-        <div
-          style={{
-            marginBottom: 18,
-            padding: 16,
-            border: "1px solid #444",
-            borderRadius: 12,
-          }}
-        >
-          <h2 style={{ marginTop: 0 }}>✅ Reserva creada</h2>
-          <p>
-            <b>bookingId:</b> {confirmation.bookingId}
-          </p>
-          <p>
-            <b>Total:</b> {confirmation.totalPrice}
-          </p>
-          <p>
-            <b>Token:</b> {confirmation.token}
-          </p>
-
-          <div style={{ background: "white", padding: 12, display: "inline-block", borderRadius: 8 }}>
-            <QRCode value={String(confirmation.token)} />
+        {error && (
+          <div className="rounded-2xl border border-rose-400/20 bg-rose-400/10 px-4 py-3 text-sm text-rose-200">
+            {error}
           </div>
-        </div>
-      )}
-
-      <h2>Horas disponibles</h2>
-      {loadingAvail ? (
-        <p>Cargando disponibilidad...</p>
-      ) : (
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 12 }}>
-          {available.length === 0 ? (
-            <p>No hay horas disponibles.</p>
-          ) : (
-            available.map((h) => {
-              const isSelected = selectedHour === h;
-              return (
-                <button
-                  key={h}
-                  style={{
-                    padding: "10px 12px",
-                    borderRadius: 10,
-                    border: isSelected ? "2px solid #8ab4f8" : "1px solid #555",
-                    cursor: "pointer",
-                    opacity: creating ? 0.6 : 1,
-                  }}
-                  disabled={creating}
-                  onClick={() => setSelectedHour(h)}
-                >
-                  {h}:00
-                </button>
-              );
-            })
-          )}
-        </div>
-      )}
-
-      <div style={{ marginBottom: 18 }}>
-        <button
-          onClick={createBooking}
-          disabled={creating || selectedHour == null || !courtId || !date}
-          style={{
-            padding: "10px 14px",
-            borderRadius: 10,
-            border: "1px solid #555",
-            cursor: creating || selectedHour == null ? "not-allowed" : "pointer",
-          }}
-        >
-          {creating
-            ? "Reservando..."
-            : selectedHour == null
-            ? "Elige una hora para reservar"
-            : `Reservar ${selectedHour}:00–${endHour}:00`}
-        </button>
-      </div>
-
-      <h2>Horas ocupadas</h2>
-      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-        {booked.length === 0 ? (
-          <p>No hay horas ocupadas.</p>
-        ) : (
-          booked.map((h) => (
-            <span
-              key={h}
-              style={{
-                padding: "8px 10px",
-                borderRadius: 10,
-                border: "1px solid #333",
-                opacity: 0.7,
-              }}
-            >
-              {h}:00
-            </span>
-          ))
         )}
+
+        <section className="grid gap-8 xl:grid-cols-[1.1fr_0.9fr]">
+          <BookingFormCard
+            courts={courts}
+            courtId={courtId}
+            setCourtId={setCourtId}
+            date={date}
+            setDate={setDate}
+            peopleCount={peopleCount}
+            setPeopleCount={setPeopleCount}
+            loadingCourts={loadingCourts}
+            creating={creating}
+            selectedHour={selectedHour}
+            endHour={endHour}
+            onCreateBooking={createBooking}
+          />
+
+          <TimeSlots
+            loadingAvail={loadingAvail}
+            available={available}
+            selectedHour={selectedHour}
+            setSelectedHour={setSelectedHour}
+            creating={creating}
+          />
+        </section>
+
+        <BookingConfirmation confirmation={confirmation} />
+
+        <BookedHours booked={booked} />
       </div>
-    </div>
+    </main>
   );
 }
