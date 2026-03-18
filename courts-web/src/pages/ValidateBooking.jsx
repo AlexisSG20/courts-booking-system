@@ -9,14 +9,20 @@ import {
   getAccessToken,
 } from "../lib/auth";
 
-
-const API = "/api"; // usando proxy de Vite
+import ValidateHero from "../components/validate/ValidateHero";
+import StaffSessionCard from "../components/validate/StaffSessionCard";
+import TokenValidationCard from "../components/validate/TokenValidationCard";
+import ScannerCard from "../components/validate/ScannerCard";
+import BookingResultCard from "../components/validate/BookingResultCard";
+import ValidateEmptyState from "../components/validate/ValidateEmptyState";
 
 export default function ValidateBooking({ onAuthChange }) {
   const navigate = useNavigate();
   const scannedRef = useRef(false);
   const readerRef = useRef(null);
   const videoRef = useRef(null);
+  const streamRef = useRef(null);
+  const scanningActiveRef = useRef(false);
 
   const [videoReady, setVideoReady] = useState(false);
   const [scanning, setScanning] = useState(false);
@@ -28,7 +34,6 @@ export default function ValidateBooking({ onAuthChange }) {
   const [booking, setBooking] = useState(null);
   const [error, setError] = useState("");
 
-  // ===== Auth (para STAFF/ADMIN) =====
   const [me, setMe] = useState(null);
   const [authLoading, setAuthLoading] = useState(false);
   const [email, setEmail] = useState("admin@courts.com");
@@ -108,7 +113,7 @@ export default function ValidateBooking({ onAuthChange }) {
         return;
       }
 
-      const data = await res.json(); // { valid: true, booking }
+      const data = await res.json();
       setBooking(data.booking);
     } catch {
       setError("Failed to fetch (backend no reachable)");
@@ -140,11 +145,9 @@ export default function ValidateBooking({ onAuthChange }) {
         return;
       }
 
-      // backend recomendado: { checkedIn: true/false, alreadyUsed?: true, booking }
       if (data?.booking) setBooking(data.booking);
 
       if (data?.checkedIn === true) {
-        // opcional: mensaje verde, por ahora nada
       } else if (data?.alreadyUsed) {
         setError("🚫 Este token ya fue usado.");
       }
@@ -169,15 +172,41 @@ export default function ValidateBooking({ onAuthChange }) {
     }
 
     scannedRef.current = false;
+    scanningActiveRef.current = true;
     setVideoReady(false);
     setScanning(true);
   };
 
   const stopScan = () => {
+    scanningActiveRef.current = false;
+    scannedRef.current = false;
+
     try {
       readerRef.current?.reset();
     } catch {}
+
     readerRef.current = null;
+
+    try {
+      const stream = streamRef.current;
+      if (stream) {
+        stream.getTracks().forEach((track) => track.stop());
+      }
+    } catch {}
+
+    streamRef.current = null;
+
+    if (videoRef.current) {
+      try {
+        videoRef.current.pause();
+      } catch {}
+
+      try {
+        videoRef.current.srcObject = null;
+      } catch {}
+    }
+
+    setVideoReady(false);
     setScanning(false);
   };
 
@@ -188,7 +217,7 @@ export default function ValidateBooking({ onAuthChange }) {
 
     const run = async () => {
       await new Promise((r) => setTimeout(r, 0));
-      if (cancelled) return;
+      if (cancelled || !scanningActiveRef.current) return;
 
       if (!videoRef.current) {
         setError("No se pudo montar el video.");
@@ -197,28 +226,42 @@ export default function ValidateBooking({ onAuthChange }) {
       }
 
       try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: "environment" },
+          audio: false,
+        });
+
+        if (cancelled || !scanningActiveRef.current) {
+          stream.getTracks().forEach((track) => track.stop());
+          return;
+        }
+
+        streamRef.current = stream;
+        videoRef.current.srcObject = stream;
+
         const reader = new BrowserMultiFormatReader();
         readerRef.current = reader;
 
-        await reader.decodeFromConstraints(
-          { video: { facingMode: "environment" } },
-          videoRef.current,
-          (result) => {
-            if (!result) return;
-            if (scannedRef.current) return;
+        await reader.decodeFromVideoElement(videoRef.current, (result) => {
+          if (!scanningActiveRef.current) return;
+          if (!result) return;
+          if (scannedRef.current) return;
 
-            scannedRef.current = true;
-            const text = result.getText();
+          scannedRef.current = true;
 
-            setToken(text);
-            validate(text);
+          const text = result.getText();
+          setToken(text);
+          validate(text);
 
-            setTimeout(() => stopScan(), 250);
-          }
-        );
+          setTimeout(() => {
+            stopScan();
+          }, 250);
+        });
       } catch (e) {
-        setError(`No se pudo abrir la cámara: ${e?.name ?? "Error"}`);
-        setScanning(false);
+        if (!cancelled) {
+          setError(`No se pudo abrir la cámara: ${e?.name ?? "Error"}`);
+          stopScan();
+        }
       }
     };
 
@@ -231,135 +274,60 @@ export default function ValidateBooking({ onAuthChange }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scanning]);
 
-  const isUsed = Boolean(booking?.usedAt);
-
   return (
-    <div style={{ fontFamily: "system-ui", padding: 24, maxWidth: 720 }}>
-      <h1>Validar reserva</h1>
+    <main className="mx-auto w-full max-w-7xl px-4 py-8 md:px-6 md:py-10">
+      <div className="grid gap-8">
+        <ValidateHero />
 
-      {/* ===== Login / Sesión ===== */}
-      <div style={{ marginTop: 12, padding: 12, border: "1px solid #444", borderRadius: 12 }}>
-        {me ? (
-          <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
-            <div style={{ opacity: 0.9 }}>
-              Sesión: <b>{me.email}</b> — Rol: <b>{me.role}</b>
-            </div>
-            <button onClick={doLogout} disabled={authLoading} style={{ padding: "8px 12px", borderRadius: 8 }}>
-              {authLoading ? "Saliendo..." : "Salir"}
-            </button>
+        <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
+          <div className="grid gap-6">
+            <StaffSessionCard
+              me={me}
+              authLoading={authLoading}
+              email={email}
+              password={password}
+              setEmail={setEmail}
+              setPassword={setPassword}
+              doLogin={doLogin}
+              doLogout={doLogout}
+              goToAdmin={() => navigate("/admin/bookings")}
+            />
 
-            {me.role === "ADMIN" && (
-              <button
-                onClick={() => navigate("/admin/bookings")}
-                style={{ padding: "8px 12px", borderRadius: 8, border: "1px solid #555" }}
-              >
-                Ir a Admin
-              </button>
+            <TokenValidationCard
+              token={token}
+              setToken={setToken}
+              loading={loading}
+              scanning={scanning}
+              validate={validate}
+              startScan={startScan}
+              stopScan={stopScan}
+            />
+
+            {error && (
+              <div className="rounded-2xl border border-rose-400/20 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
+                {error}
+              </div>
             )}
           </div>
-        ) : (
-          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-            <input
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email"
-              style={{ flex: 1, minWidth: 220, padding: 10, borderRadius: 8 }}
+
+          <div className="grid gap-6">
+            <ValidateEmptyState scanning={scanning} booking={booking} />
+
+            <ScannerCard
+              scanning={scanning}
+              videoReady={videoReady}
+              videoRef={videoRef}
+              onVideoPlaying={() => setVideoReady(true)}
             />
-            <input
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Contraseña"
-              type="password"
-              style={{ flex: 1, minWidth: 180, padding: 10, borderRadius: 8 }}
+
+            <BookingResultCard
+              booking={booking}
+              checkingIn={checkingIn}
+              checkIn={checkIn}
             />
-            <button onClick={doLogin} disabled={authLoading} style={{ padding: "10px 14px", borderRadius: 8 }}>
-              {authLoading ? "Entrando..." : "Entrar"}
-            </button>
           </div>
-        )}
-      </div>
-
-      <div style={{ display: "flex", gap: 8, marginTop: 12, flexWrap: "wrap" }}>
-        <input
-          value={token}
-          onChange={(e) => setToken(e.target.value)}
-          placeholder="Pega el token (UUID) o escanea QR"
-          style={{ flex: 1, minWidth: 260, padding: 10, borderRadius: 8 }}
-        />
-
-        <button
-          onClick={() => validate()}
-          disabled={loading}
-          style={{ padding: "10px 14px", borderRadius: 8 }}
-        >
-          {loading ? "Validando..." : "Validar"}
-        </button>
-
-        {!scanning ? (
-          <button onClick={startScan} style={{ padding: "10px 14px", borderRadius: 8 }}>
-            📷 Escanear QR
-          </button>
-        ) : (
-          <button onClick={stopScan} style={{ padding: "10px 14px", borderRadius: 8 }}>
-            ✋ Detener
-          </button>
-        )}
-      </div>
-
-      {scanning && (
-        <div style={{ marginTop: 12, padding: 12, border: "1px solid #444", borderRadius: 12 }}>
-          <div style={{ marginBottom: 8, opacity: 0.8 }}>Apunta al QR…</div>
-          {!videoReady && <div style={{ marginBottom: 8, opacity: 0.8 }}>Iniciando cámara…</div>}
-
-          <video
-            ref={videoRef}
-            style={{ width: "100%", borderRadius: 12 }}
-            muted
-            playsInline
-            autoPlay
-            onPlaying={() => setVideoReady(true)}
-          />
         </div>
-      )}
-
-      {error && <p style={{ color: "crimson", marginTop: 12 }}>{error}</p>}
-
-      {booking && (
-        <div style={{ marginTop: 14, padding: 16, border: "1px solid #444", borderRadius: 12 }}>
-          <h2 style={{ marginTop: 0 }}>
-            {isUsed ? "🚫 Reserva ya usada" : "✅ Reserva válida"}
-          </h2>
-
-          {isUsed && (
-            <p>
-              <b>usedAt:</b>{" "}
-              {new Date(booking.usedAt).toLocaleString()}
-            </p>
-          )}
-
-          {!isUsed && (
-            <button
-              onClick={checkIn}
-              disabled={checkingIn}
-              style={{
-                padding: "10px 14px",
-                borderRadius: 8,
-                marginBottom: 12,
-              }}
-            >
-              {checkingIn ? "Marcando..." : "Marcar como usada (check-in)"}
-            </button>
-          )}
-
-          <p><b>bookingId:</b> {booking.id}</p>
-          <p><b>courtId:</b> {booking.courtId}</p>
-          <p><b>fecha:</b> {booking.date}</p>
-          <p><b>horario:</b> {booking.startHour}:00 - {booking.endHour}:00</p>
-          <p><b>personas:</b> {booking.peopleCount}</p>
-          <p><b>total:</b> {booking.totalPrice}</p>
-          <p style={{ wordBreak: "break-all" }}><b>token:</b> {booking.token}</p>
-        </div>
-      )}
-    </div>
+      </div>
+    </main>
   );
 }
