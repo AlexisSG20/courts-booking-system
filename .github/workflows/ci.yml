@@ -36,5 +36,9 @@ jobs:
         env:
           DATABASE_URL: "postgresql://user:pass@localhost:5432/dummy"
 
+      - name: Test
+        if: matrix.project == 'courts-api'
+        run: npm test -- --runInBand
+
       - name: Build
         run: npm run build
