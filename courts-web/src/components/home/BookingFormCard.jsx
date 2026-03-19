@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import DatePicker from "../admin/DatePicker";
 
 export default function BookingFormCard({
   courts,
@@ -14,22 +14,8 @@ export default function BookingFormCard({
   endHour,
   onCreateBooking,
 }) {
-  const dateInputRef = useRef(null);
-
-  function openDatePicker() {
-    const input = dateInputRef.current;
-    if (!input) return;
-
-    if (typeof input.showPicker === "function") {
-      input.showPicker();
-    } else {
-      input.focus();
-      input.click();
-    }
-  }
-
   return (
-    <section className="rounded-[2rem] border border-white/10 bg-slate-900/80 p-7 shadow-xl shadow-black/20 backdrop-blur">
+    <section className="relative z-20 rounded-[2rem] border border-white/10 bg-slate-900/80 p-7 shadow-xl shadow-black/20 backdrop-blur">
       <div className="mb-7">
         <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
           Nueva reserva
@@ -72,26 +58,11 @@ export default function BookingFormCard({
           <label className="mb-2 block text-sm font-medium text-slate-300">
             Fecha
           </label>
-
-          <div className="relative">
-            <input
-              ref={dateInputRef}
-              type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              onClick={openDatePicker}
-              className="h-14 w-full cursor-pointer rounded-2xl border border-white/10 bg-slate-950/80 px-4 pr-14 text-base text-white outline-none transition focus:border-cyan-400/50 focus:ring-2 focus:ring-cyan-400/10"
-            />
-
-            <button
-              type="button"
-              onClick={openDatePicker}
-              className="absolute inset-y-0 right-3 flex items-center rounded-lg px-2 text-slate-400 transition hover:text-white"
-              aria-label="Abrir calendario"
-            >
-              📅
-            </button>
-          </div>
+          <DatePicker
+            value={date}
+            onChange={setDate}
+            placeholder="Seleccionar fecha"
+          />
         </div>
 
         <div>
