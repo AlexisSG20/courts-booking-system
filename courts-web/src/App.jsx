@@ -8,6 +8,8 @@ import ValidateBooking from "./pages/ValidateBooking";
 import { getAccessToken } from "./lib/auth";
 import { getMe } from "./lib/me";
 
+import AIDemo from "./pages/AIDemo";
+
 function NavLinkItem({ to, children, isActive }) {
   return (
     <Link
@@ -60,6 +62,13 @@ function AppShell({ me, refreshMe }) {
                 Admin reservas
               </NavLinkItem>
             )}
+
+            <NavLinkItem
+              to="/ai-demo"
+              isActive={location.pathname === "/ai-demo"}
+            >
+              Demo IA
+            </NavLinkItem>
           </nav>
         </div>
       </header>
@@ -70,6 +79,7 @@ function AppShell({ me, refreshMe }) {
           path="/validate"
           element={<ValidateBooking onAuthChange={refreshMe} />}
         />
+        
         <Route
           path="/admin/bookings"
           element={
@@ -80,6 +90,8 @@ function AppShell({ me, refreshMe }) {
             )
           }
         />
+
+        <Route path="/ai-demo" element={<AIDemo />} />
       </Routes>
     </div>
   );
