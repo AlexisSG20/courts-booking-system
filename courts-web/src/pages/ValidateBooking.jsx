@@ -3,11 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { BrowserMultiFormatReader } from "@zxing/browser";
 import { apiFetch } from "../lib/api";
 import { getMe } from "../lib/me";
-import {
-  login as authLogin,
-  logout as authLogout,
-  getAccessToken,
-} from "../lib/auth";
+import { logout as authLogout, getAccessToken } from "../lib/auth";
 
 import ValidateHero from "../components/validate/ValidateHero";
 import StaffSessionCard from "../components/validate/StaffSessionCard";
@@ -36,8 +32,6 @@ export default function ValidateBooking({ onAuthChange }) {
 
   const [me, setMe] = useState(null);
   const [authLoading, setAuthLoading] = useState(false);
-  const [email, setEmail] = useState("admin@courts.com");
-  const [password, setPassword] = useState("");
 
   const loadMe = async () => {
     if (!getAccessToken()) {
@@ -53,21 +47,6 @@ export default function ValidateBooking({ onAuthChange }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const doLogin = async () => {
-    setError("");
-    setAuthLoading(true);
-    try {
-      await authLogin(email, password);
-      await loadMe();
-      await onAuthChange?.();
-      setPassword("");
-    } catch (e) {
-      setError(`⚠️ ${e?.message ?? "Error al iniciar sesión"}`);
-    } finally {
-      setAuthLoading(false);
-    }
-  };
-
   const doLogout = async () => {
     setError("");
     setAuthLoading(true);
@@ -75,9 +54,13 @@ export default function ValidateBooking({ onAuthChange }) {
       await authLogout();
       setMe(null);
       await onAuthChange?.();
+      setBooking(null);
+      setToken("");
     } catch {
       setMe(null);
       await onAuthChange?.();
+      setBooking(null);
+      setToken("");
     } finally {
       setAuthLoading(false);
     }
@@ -284,13 +267,9 @@ export default function ValidateBooking({ onAuthChange }) {
             <StaffSessionCard
               me={me}
               authLoading={authLoading}
-              email={email}
-              password={password}
-              setEmail={setEmail}
-              setPassword={setPassword}
-              doLogin={doLogin}
               doLogout={doLogout}
               goToAdmin={() => navigate("/admin/bookings")}
+              goToLogin={() => navigate("/login")}
             />
 
             <TokenValidationCard

@@ -4,11 +4,11 @@ import { Routes, Route, Link, Navigate, useLocation } from "react-router-dom";
 import AdminBookings from "./pages/AdminBookings";
 import Home from "./pages/Home";
 import ValidateBooking from "./pages/ValidateBooking";
+import AIDemo from "./pages/AIDemo";
+import Login from "./pages/Login";
 
 import { getAccessToken } from "./lib/auth";
 import { getMe } from "./lib/me";
-
-import AIDemo from "./pages/AIDemo";
 
 function NavLinkItem({ to, children, isActive }) {
   return (
@@ -47,6 +47,15 @@ function AppShell({ me, refreshMe }) {
               Reservar
             </NavLinkItem>
 
+            {!me && (
+              <NavLinkItem
+                to="/login"
+                isActive={location.pathname === "/login"}
+              >
+                Iniciar sesión
+              </NavLinkItem>
+            )}
+
             <NavLinkItem
               to="/validate"
               isActive={location.pathname === "/validate"}
@@ -74,12 +83,12 @@ function AppShell({ me, refreshMe }) {
       </header>
 
       <Routes>
+        <Route path="/login" element={<Login onAuthChange={refreshMe} me={me} />} />
         <Route path="/" element={<Home />} />
         <Route
           path="/validate"
           element={<ValidateBooking onAuthChange={refreshMe} />}
         />
-        
         <Route
           path="/admin/bookings"
           element={
@@ -90,7 +99,6 @@ function AppShell({ me, refreshMe }) {
             )
           }
         />
-
         <Route path="/ai-demo" element={<AIDemo />} />
       </Routes>
     </div>
