@@ -1,13 +1,9 @@
 export default function StaffSessionCard({
   me,
   authLoading,
-  email,
-  password,
-  setEmail,
-  setPassword,
-  doLogin,
   doLogout,
   goToAdmin,
+  goToLogin,
 }) {
   return (
     <section className="rounded-[24px] border border-white/10 bg-slate-950/70 p-6 shadow-[0_0_0_1px_rgba(255,255,255,0.03)] backdrop-blur">
@@ -20,8 +16,8 @@ export default function StaffSessionCard({
             Staff / Administrador
           </h2>
           <p className="mt-2 max-w-xl text-sm leading-6 text-slate-400">
-            Inicia sesión para validar tokens, escanear códigos QR y registrar
-            el ingreso de reservas.
+            Accede con tu cuenta para validar tokens, escanear códigos QR y
+            registrar el ingreso de reservas.
           </p>
         </div>
 
@@ -34,9 +30,7 @@ export default function StaffSessionCard({
         <div className="flex flex-col gap-4 rounded-3xl border border-white/10 bg-white/[0.03] p-4 md:flex-row md:items-center md:justify-between">
           <div>
             <p className="text-sm text-slate-400">Sesión actual</p>
-            <p className="mt-1 text-lg font-semibold text-white">
-              {me.email}
-            </p>
+            <p className="mt-1 text-lg font-semibold text-white">{me.email}</p>
             <p className="mt-1 text-sm text-slate-300">
               Rol: <span className="font-semibold text-cyan-300">{me.role}</span>
             </p>
@@ -62,40 +56,26 @@ export default function StaffSessionCard({
           </div>
         </div>
       ) : (
-        <div className="grid gap-4 md:grid-cols-[1fr_1fr_auto]">
-          <label className="block">
-            <span className="mb-2 block text-sm font-medium text-slate-300">
-              Email
-            </span>
-            <input
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="admin@courts.com"
-              className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-400/50 focus:ring-2 focus:ring-cyan-500/20"
-            />
-          </label>
+        <div className="rounded-3xl border border-amber-400/15 bg-amber-500/5 p-5">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div>
+              <p className="text-sm font-medium text-amber-200">
+                Necesitas iniciar sesión para usar esta pantalla.
+              </p>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300">
+                La validación por token y el registro de ingreso requieren una
+                sesión activa de staff o administrador.
+              </p>
+            </div>
 
-          <label className="block">
-            <span className="mb-2 block text-sm font-medium text-slate-300">
-              Contraseña
-            </span>
-            <input
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-              type="password"
-              className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-cyan-400/50 focus:ring-2 focus:ring-cyan-500/20"
-            />
-          </label>
-
-          <div className="flex items-end">
-            <button
-              onClick={doLogin}
-              disabled={authLoading}
-              className="w-full cursor-pointer rounded-2xl bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60 md:w-auto"
-            >
-              {authLoading ? "Entrando..." : "Entrar"}
-            </button>
+            <div className="flex shrink-0">
+              <button
+                onClick={goToLogin}
+                className="cursor-pointer rounded-2xl border border-cyan-400/25 bg-cyan-500/10 px-5 py-3 text-sm font-semibold text-cyan-100 transition hover:border-cyan-300/40 hover:bg-cyan-500/15"
+              >
+                Ir a iniciar sesión
+              </button>
+            </div>
           </div>
         </div>
       )}
