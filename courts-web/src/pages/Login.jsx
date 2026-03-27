@@ -43,8 +43,8 @@ export default function Login({ onAuthChange, me }) {
   }
 
   return (
-    <main className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(18,56,110,0.35),_transparent_28%),linear-gradient(180deg,_#020617_0%,_#020817_48%,_#01030d_100%)] text-white">
-      <section className="mx-auto flex min-h-screen w-full max-w-7xl items-center px-6 py-10 sm:px-8 lg:px-10">
+    <main className="bg-[radial-gradient(circle_at_top,_rgba(18,56,110,0.35),_transparent_28%),linear-gradient(180deg,_#020617_0%,_#020817_48%,_#01030d_100%)] text-white">
+      <section className="mx-auto flex w-full max-w-7xl items-center px-6 py-10 sm:px-8 lg:px-10">
         <div className="grid w-full gap-8 lg:grid-cols-[1.1fr_0.9fr]">
           <div className="rounded-[32px] border border-cyan-400/15 bg-[linear-gradient(135deg,rgba(6,78,110,0.18),rgba(15,23,42,0.86)_42%,rgba(30,41,59,0.72)_100%)] p-7 shadow-[0_20px_70px_rgba(0,0,0,0.35)] sm:p-10">
             <div className="mb-6 flex flex-wrap gap-3">

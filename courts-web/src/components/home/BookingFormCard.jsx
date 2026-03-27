@@ -1,4 +1,4 @@
-import DatePicker from "../admin/DatePicker";
+import DatePicker from "../Admin/DatePicker";
 
 export default function BookingFormCard({
   courts,

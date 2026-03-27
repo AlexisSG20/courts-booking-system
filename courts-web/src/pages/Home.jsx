@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
-import HomeHero from "../components/home/HomeHero";
-import BookingFormCard from "../components/home/BookingFormCard";
-import BookingConfirmation from "../components/home/BookingConfirmation";
-import TimeSlots from "../components/home/TimeSlots";
-import BookedHours from "../components/home/BookedHours";
+import HomeHero from "../components/Home/HomeHero";
+import BookingFormCard from "../components/Home/BookingFormCard";
+import BookingConfirmation from "../components/Home/BookingConfirmation";
+import TimeSlots from "../components/Home/TimeSlots";
+import BookedHours from "../components/Home/BookedHours";
 
 const API = "/api";
 
