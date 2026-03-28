@@ -1,6 +1,6 @@
 export default function BookedHours({ booked }) {
   return (
-    <section className="rounded-3xl border border-gray-200 bg-white p-6 shadow-lg">
+    <section className="rounded-3xl border border-emerald-200 bg-gradient-to-b from-white via-emerald-50/50 to-emerald-100/40 p-6 shadow-xl backdrop-blur-sm">
       <div className="mb-5">
         <p className="text-sm uppercase tracking-[0.22em] text-gray-500">
           Estado del día

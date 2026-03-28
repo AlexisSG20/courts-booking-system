@@ -15,7 +15,7 @@ export default function BookingFormCard({
   onCreateBooking,
 }) {
   return (
-    <section className="relative z-20 rounded-[2rem] border border-gray-200 bg-white p-7 shadow-lg">
+    <section className="relative z-20 rounded-[2rem] border border-emerald-200 bg-gradient-to-b from-white via-emerald-50/50 to-emerald-100/40 p-7 shadow-xl backdrop-blur-sm">
       <div className="mb-7">
         <p className="text-xs uppercase tracking-[0.3em] text-gray-500">
           Nueva reserva
