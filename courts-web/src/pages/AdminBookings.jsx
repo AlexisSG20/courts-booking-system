@@ -3,11 +3,11 @@ import { apiFetch } from "../lib/api";
 import { exportBookingsToExcel } from "../lib/exportExcel";
 import { getAccessToken, clearAccessToken } from "../lib/auth";
 
-import AdminHero from "../components/Admin/AdminHero";
-import AdminFiltersCard from "../components/Admin/AdminFiltersCard";
-import AdminStatsGrid from "../components/Admin/AdminStatsGrid";
-import AdminCourtBreakdown from "../components/Admin/AdminCourtBreakdown";
-import AdminBookingsTable from "../components/Admin/AdminBookingsTable";
+import AdminHero from "../components/admin/AdminHero";
+import AdminFiltersCard from "../components/admin/AdminFiltersCard";
+import AdminStatsGrid from "../components/admin/AdminStatsGrid";
+import AdminCourtBreakdown from "../components/admin/AdminCourtBreakdown";
+import AdminBookingsTable from "../components/admin/AdminBookingsTable";
 
 const API = "/api";
 const sidePanelBase =
