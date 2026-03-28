@@ -6,7 +6,6 @@ import { getMe } from "../lib/me";
 import { logout as authLogout, getAccessToken } from "../lib/auth";
 
 import ValidateHero from "../components/validate/ValidateHero";
-import StaffSessionCard from "../components/validate/StaffSessionCard";
 import TokenValidationCard from "../components/validate/TokenValidationCard";
 import ScannerCard from "../components/validate/ScannerCard";
 import BookingResultCard from "../components/validate/BookingResultCard";
@@ -264,13 +263,6 @@ export default function ValidateBooking({ onAuthChange }) {
 
         <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
           <div className="grid gap-6">
-            <StaffSessionCard
-              me={me}
-              authLoading={authLoading}
-              doLogout={doLogout}
-              goToAdmin={() => navigate("/admin/bookings")}
-              goToLogin={() => navigate("/login")}
-            />
 
             <TokenValidationCard
               token={token}

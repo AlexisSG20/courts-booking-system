@@ -1,11 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { apiFetch } from "../lib/api";
 import { exportBookingsToExcel } from "../lib/exportExcel";
-import { getAccessToken, login as authLogin, clearAccessToken } from "../lib/auth";
-import { logout as authLogout } from "../lib/auth";
+import { getAccessToken, clearAccessToken } from "../lib/auth";
 
 import AdminHero from "../components/admin/AdminHero";
-import AdminSessionCard from "../components/admin/AdminSessionCard";
 import AdminFiltersCard from "../components/admin/AdminFiltersCard";
 import AdminStatsGrid from "../components/admin/AdminStatsGrid";
 import AdminCourtBreakdown from "../components/admin/AdminCourtBreakdown";
@@ -51,7 +49,7 @@ const formatLimaDateTime = (dt) => {
   }).format(d);
 };
 
-export default function AdminBookings({ onAuthChange }) {
+export default function AdminBookings() {
   const [courts, setCourts] = useState([]);
   const [courtId, setCourtId] = useState("");
   const [pending, setPending] = useState(false);
@@ -65,9 +63,6 @@ export default function AdminBookings({ onAuthChange }) {
   const [error, setError] = useState("");
 
   const [accessToken, setAccessTokenState] = useState(getAccessToken());
-  const [email, setEmail] = useState("admin@courts.com");
-  const [password, setPassword] = useState("");
-  const [authLoading, setAuthLoading] = useState(false);
 
   useEffect(() => {
     fetch(`${API}/courts`)
@@ -118,32 +113,6 @@ export default function AdminBookings({ onAuthChange }) {
     } finally {
       setLoading(false);
     }
-  };
-
-  const doLogin = async () => {
-    setAuthLoading(true);
-    setError("");
-
-    try {
-      await authLogin(email, password);
-      setAccessTokenState(getAccessToken());
-      await onAuthChange?.();
-      await load();
-    } catch (e) {
-      clearAccessToken();
-      setAccessTokenState("");
-      setError(e.message || "Error de login");
-    } finally {
-      setAuthLoading(false);
-    }
-  };
-
-  const doLogout = async () => {
-    await authLogout();
-    setAccessTokenState("");
-    await onAuthChange?.();
-    setError("Sesión cerrada");
-    setData({ count: 0, bookings: [] });
   };
 
   useEffect(() => {
@@ -268,18 +237,7 @@ export default function AdminBookings({ onAuthChange }) {
     <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 py-6 md:px-6 lg:px-8">
       <AdminHero />
 
-      <div className="grid gap-6 xl:grid-cols-[0.95fr_1.05fr]">
-        <AdminSessionCard
-          email={email || "admin@courts.com"}
-          password={password}
-          setEmail={setEmail}
-          setPassword={setPassword}
-          doLogin={doLogin}
-          doLogout={doLogout}
-          authLoading={authLoading}
-          accessToken={accessToken}
-        />
-
+      <div className="grid gap-6">
         <AdminFiltersCard
           month={month}
           setMonth={setMonth}
