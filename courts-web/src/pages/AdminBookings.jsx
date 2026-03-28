@@ -3,13 +3,42 @@ import { apiFetch } from "../lib/api";
 import { exportBookingsToExcel } from "../lib/exportExcel";
 import { getAccessToken, clearAccessToken } from "../lib/auth";
 
-import AdminHero from "../components/admin/AdminHero";
-import AdminFiltersCard from "../components/admin/AdminFiltersCard";
-import AdminStatsGrid from "../components/admin/AdminStatsGrid";
-import AdminCourtBreakdown from "../components/admin/AdminCourtBreakdown";
-import AdminBookingsTable from "../components/admin/AdminBookingsTable";
+import AdminHero from "../components/Admin/AdminHero";
+import AdminFiltersCard from "../components/Admin/AdminFiltersCard";
+import AdminStatsGrid from "../components/Admin/AdminStatsGrid";
+import AdminCourtBreakdown from "../components/Admin/AdminCourtBreakdown";
+import AdminBookingsTable from "../components/Admin/AdminBookingsTable";
 
 const API = "/api";
+const sidePanelBase =
+  "pointer-events-none absolute inset-y-0 z-0 hidden overflow-hidden xl:block";
+const sidePanelWidth = "clamp(9rem, calc((100vw - 80rem) / 2 + 1.5rem), 20rem)";
+
+const leftSideVisual = {
+  backgroundImage:
+    "linear-gradient(90deg, rgba(2, 6, 23, 0.34) 0%, rgba(2, 6, 23, 0.12) 42%, rgba(2, 6, 23, 0.02) 68%, transparent 100%), url('https://images.unsplash.com/photo-1551958219-acbc608c6377?auto=format&fit=crop&w=1200&h=1800&q=80')",
+  backgroundSize: "cover",
+  backgroundRepeat: "no-repeat",
+  backgroundPosition: "34% center",
+  filter: "saturate(1.05) contrast(1.05) brightness(0.92)",
+  WebkitMaskImage:
+    "linear-gradient(90deg, rgba(0,0,0,0.98) 0%, rgba(0,0,0,0.94) 60%, rgba(0,0,0,0.58) 80%, transparent 100%)",
+  maskImage:
+    "linear-gradient(90deg, rgba(0,0,0,0.98) 0%, rgba(0,0,0,0.94) 60%, rgba(0,0,0,0.58) 80%, transparent 100%)",
+};
+
+const rightSideVisual = {
+  backgroundImage:
+    "linear-gradient(270deg, rgba(2, 6, 23, 0.44) 0%, rgba(2, 6, 23, 0.18) 42%, rgba(2, 6, 23, 0.04) 68%, transparent 100%), url('https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?auto=format&fit=crop&w=1200&h=1800&q=80')",
+  backgroundSize: "cover",
+  backgroundRepeat: "no-repeat",
+  backgroundPosition: "72% center",
+  filter: "saturate(1.06) contrast(1.04) brightness(0.92)",
+  WebkitMaskImage:
+    "linear-gradient(270deg, rgba(0,0,0,0.98) 0%, rgba(0,0,0,0.94) 60%, rgba(0,0,0,0.58) 80%, transparent 100%)",
+  maskImage:
+    "linear-gradient(270deg, rgba(0,0,0,0.98) 0%, rgba(0,0,0,0.94) 60%, rgba(0,0,0,0.58) 80%, transparent 100%)",
+};
 
 const money = (n) =>
   new Intl.NumberFormat("es-PE", { style: "currency", currency: "PEN" }).format(n);
@@ -100,7 +129,7 @@ export default function AdminBookings() {
       if (r.status === 401 || r.status === 403) {
         clearAccessToken();
         setAccessTokenState("");
-        throw new Error("No autorizado. Inicia sesión nuevamente.");
+        throw new Error("No autorizado. Inicia sesion nuevamente.");
       }
 
       const j = await r.json().catch(() => ({}));
@@ -131,7 +160,7 @@ export default function AdminBookings() {
       if (r.status === 401 || r.status === 403) {
         clearAccessToken();
         setAccessTokenState("");
-        throw new Error(j?.message ?? "No autorizado. Inicia sesión nuevamente.");
+        throw new Error(j?.message ?? "No autorizado. Inicia sesion nuevamente.");
       }
 
       if (!r.ok) throw new Error(j?.message ?? `Error (${r.status})`);
@@ -139,7 +168,7 @@ export default function AdminBookings() {
       await load();
 
       if (j?.alreadyUsed) alert("Ya estaba usada.");
-      else alert("Check-in realizado ✅");
+      else alert("Check-in realizado.");
     } catch (e) {
       alert(e.message || "Error");
     }
@@ -156,7 +185,7 @@ export default function AdminBookings() {
   const copy = async (text) => {
     try {
       await navigator.clipboard.writeText(text);
-      alert("Token copiado ✅");
+      alert("Token copiado.");
     } catch {
       const ta = document.createElement("textarea");
       ta.value = text;
@@ -164,7 +193,7 @@ export default function AdminBookings() {
       ta.select();
       document.execCommand("copy");
       document.body.removeChild(ta);
-      alert("Token copiado ✅");
+      alert("Token copiado.");
     }
   };
 
@@ -191,7 +220,14 @@ export default function AdminBookings() {
       const name = b.court?.name ?? `#${id}`;
 
       if (!init.byCourt[id]) {
-        init.byCourt[id] = { name, total: 0, pending: 0, used: 0, revenue: 0, people: 0 };
+        init.byCourt[id] = {
+          name,
+          total: 0,
+          pending: 0,
+          used: 0,
+          revenue: 0,
+          people: 0,
+        };
       }
 
       const c = init.byCourt[id];
@@ -234,71 +270,89 @@ export default function AdminBookings() {
   const hasBookings = (data.bookings?.length ?? 0) > 0;
 
   return (
-    <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 py-6 md:px-6 lg:px-8">
-      <AdminHero />
-
-      <div className="grid gap-6">
-        <AdminFiltersCard
-          month={month}
-          setMonth={setMonth}
-          from={from}
-          setFrom={setFrom}
-          to={to}
-          setTo={setTo}
-          courtId={courtId}
-          setCourtId={setCourtId}
-          courts={courts}
-          pending={pending}
-          setPending={setPending}
-          load={load}
-          clearFilters={clearFilters}
-          exportExcel={exportExcel}
-          loading={loading}
-          hasBookings={hasBookings}
-        />
+    <main className="relative min-h-[calc(100vh-73px)] overflow-x-hidden bg-transparent text-white">
+      <div
+        aria-hidden="true"
+        className={`${sidePanelBase} left-0 opacity-66`}
+        style={{ ...leftSideVisual, width: sidePanelWidth }}
+      >
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_24%,rgba(255,255,255,0.08),transparent_22%),linear-gradient(90deg,rgba(2,6,23,0.05)_0%,rgba(2,6,23,0.015)_44%,transparent_80%)]" />
       </div>
 
-      {(from || to) && (
-        <div className="rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-600">
-          Rango activo: <span className="font-semibold text-gray-900">{from || "—"}</span> →{" "}
-          <span className="font-semibold text-gray-900">{to || "—"}</span>
+      <div
+        aria-hidden="true"
+        className={`${sidePanelBase} right-0 opacity-68`}
+        style={{ ...rightSideVisual, width: sidePanelWidth }}
+      >
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_82%_28%,rgba(255,255,255,0.08),transparent_20%),linear-gradient(270deg,rgba(2,6,23,0.05)_0%,rgba(2,6,23,0.015)_44%,transparent_80%)]" />
+      </div>
+
+      <div className="relative mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 py-6 md:px-6 lg:px-8">
+        <AdminHero />
+
+        <div className="grid gap-6">
+          <AdminFiltersCard
+            month={month}
+            setMonth={setMonth}
+            from={from}
+            setFrom={setFrom}
+            to={to}
+            setTo={setTo}
+            courtId={courtId}
+            setCourtId={setCourtId}
+            courts={courts}
+            pending={pending}
+            setPending={setPending}
+            load={load}
+            clearFilters={clearFilters}
+            exportExcel={exportExcel}
+            loading={loading}
+            hasBookings={hasBookings}
+          />
         </div>
-      )}
 
-      {error && (
-        <div className="rounded-2xl border border-rose-200 bg-rose-100 px-4 py-3 text-sm text-rose-600">
-          {error}
-        </div>
-      )}
+        {(from || to) && (
+          <div className="rounded-2xl border border-white/10 bg-white/6 px-4 py-3 text-sm text-slate-200/76 backdrop-blur-sm">
+            Rango activo: <span className="font-semibold text-white">{from || "-"}</span> →{" "}
+            <span className="font-semibold text-white">{to || "-"}</span>
+          </div>
+        )}
 
-      <AdminStatsGrid summary={summary} money={money} />
+        {error && (
+          <div className="rounded-2xl border border-rose-400/24 bg-rose-400/10 px-4 py-3 text-sm text-rose-100">
+            {error}
+          </div>
+        )}
 
-      <AdminCourtBreakdown
-        showBreakdown={showBreakdown}
-        byCourtList={byCourtList}
-        summary={summary}
-        money={money}
-        setCourtId={setCourtId}
-      />
+        <AdminStatsGrid summary={summary} money={money} />
 
-      {courtId !== "" && (
-        <div>
-          <button
-            onClick={() => setCourtId("")}
-            className="rounded-2xl border border-gray-200 bg-gray-50 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-100"
-          >
-            Ver todas las canchas
-          </button>
-        </div>
-      )}
+        <AdminCourtBreakdown
+          showBreakdown={showBreakdown}
+          byCourtList={byCourtList}
+          summary={summary}
+          money={money}
+          setCourtId={setCourtId}
+        />
 
-      <AdminBookingsTable
-        bookings={data.bookings ?? []}
-        copy={copy}
-        checkIn={checkIn}
-        money={money}
-        formatLimaDateTime={formatLimaDateTime}
-      />
-    </div>
+        {courtId !== "" && (
+          <div>
+            <button
+              onClick={() => setCourtId("")}
+              className="rounded-2xl border border-white/12 bg-white/6 px-4 py-2 text-sm font-semibold text-white/84 transition hover:bg-white/10"
+            >
+              Ver todas las canchas
+            </button>
+          </div>
+        )}
+
+        <AdminBookingsTable
+          bookings={data.bookings ?? []}
+          copy={copy}
+          checkIn={checkIn}
+          money={money}
+          formatLimaDateTime={formatLimaDateTime}
+        />
+      </div>
+    </main>
   );
 }

@@ -1,11 +1,37 @@
 import { useEffect, useMemo, useState } from "react";
-import HomeHero from "../components/home/HomeHero";
-import BookingFormCard from "../components/home/BookingFormCard";
-import BookingConfirmation from "../components/home/BookingConfirmation";
-import TimeSlots from "../components/home/TimeSlots";
-import BookedHours from "../components/home/BookedHours";
+import HomeHero from "../components/Home/HomeHero";
+import BookingFormCard from "../components/Home/BookingFormCard";
+import BookingConfirmation from "../components/Home/BookingConfirmation";
+import TimeSlots from "../components/Home/TimeSlots";
+import BookedHours from "../components/Home/BookedHours";
 
 const API = "/api";
+const sidePanelBase =
+  "pointer-events-none absolute inset-y-0 z-0 hidden overflow-hidden xl:block";
+const sidePanelWidth = "clamp(10rem, calc((100vw - 80rem) / 2 + 2rem), 22rem)";
+const rightSidePanelWidth = "clamp(8rem, calc((100vw - 80rem) / 2 + 0.5rem), 18rem)";
+const leftSideImage =
+  "https://images.unsplash.com/photo-1511886929837-354d827aae26?auto=format&fit=crop&w=1200&h=1800&q=80";
+const rightSideImage =
+  "https://images.unsplash.com/photo-1767730957756-0b4613111554?auto=format&fit=crop&w=1200&h=1800&q=80";
+
+const leftSideVisual = {
+  backgroundImage:
+    "linear-gradient(90deg, rgba(2, 6, 23, 0.26) 0%, rgba(2, 6, 23, 0.08) 42%, rgba(2, 6, 23, 0.02) 68%, transparent 100%)",
+  WebkitMaskImage:
+    "linear-gradient(90deg, rgba(0,0,0,0.98) 0%, rgba(0,0,0,0.96) 60%, rgba(0,0,0,0.62) 80%, transparent 100%)",
+  maskImage:
+    "linear-gradient(90deg, rgba(0,0,0,0.98) 0%, rgba(0,0,0,0.96) 60%, rgba(0,0,0,0.62) 80%, transparent 100%)",
+};
+
+const rightSideVisual = {
+  backgroundImage:
+    "linear-gradient(270deg, rgba(2, 6, 23, 0.38) 0%, rgba(2, 6, 23, 0.16) 42%, rgba(2, 6, 23, 0.04) 68%, transparent 100%)",
+  WebkitMaskImage:
+    "linear-gradient(270deg, rgba(0,0,0,0.98) 0%, rgba(0,0,0,0.96) 60%, rgba(0,0,0,0.62) 80%, transparent 100%)",
+  maskImage:
+    "linear-gradient(270deg, rgba(0,0,0,0.98) 0%, rgba(0,0,0,0.96) 60%, rgba(0,0,0,0.62) 80%, transparent 100%)",
+};
 
 function todayYYYYMMDD() {
   const d = new Date();
@@ -142,8 +168,44 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-transparent text-white">
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 py-8 sm:px-6 lg:px-8">
+    <main className="relative min-h-screen overflow-x-hidden bg-transparent text-white">
+      {/* Imagen decorativa izquierda - Chimpunes */}
+      <div
+        aria-hidden="true"
+        className={`${sidePanelBase} left-0 opacity-68`}
+        style={{ ...leftSideVisual, width: sidePanelWidth }}
+      >
+        <img
+          src={leftSideImage}
+          alt=""
+          loading="eager"
+          decoding="async"
+          fetchPriority="high"
+          className="absolute inset-0 h-full w-full object-cover object-[24%_center]"
+          style={{ filter: "grayscale(2%) saturate(1.08) contrast(1.12) brightness(1.02)" }}
+        />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_24%,rgba(255,255,255,0.08),transparent_20%),linear-gradient(90deg,rgba(2,6,23,0.04)_0%,rgba(2,6,23,0.015)_44%,transparent_80%)]" />
+      </div>
+
+      {/* Imagen decorativa derecha - Futbolista */}
+      <div
+        aria-hidden="true"
+        className={`${sidePanelBase} right-0 opacity-68`}
+        style={{ ...rightSideVisual, width: rightSidePanelWidth }}
+      >
+        <img
+          src={rightSideImage}
+          alt=""
+          loading="eager"
+          decoding="async"
+          fetchPriority="high"
+          className="absolute inset-0 h-full w-full object-cover object-[72%_58%]"
+          style={{ filter: "grayscale(1%) saturate(1.08) contrast(1.12) brightness(1.03)" }}
+        />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_82%_28%,rgba(255,255,255,0.08),transparent_20%),linear-gradient(270deg,rgba(2,6,23,0.04)_0%,rgba(2,6,23,0.015)_44%,transparent_80%)]" />
+      </div>
+
+      <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 py-8 sm:px-6 lg:px-8">
         <HomeHero />
 
         {error && (
