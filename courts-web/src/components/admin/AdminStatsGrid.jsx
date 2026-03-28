@@ -1,20 +1,20 @@
-function StatCard({ label, value, accent = "cyan", align = "left" }) {
+function StatCard({ label, value, accent = "emerald", align = "left" }) {
   const accentMap = {
-    cyan: "from-cyan-400/20 to-cyan-500/5 text-cyan-200",
-    emerald: "from-emerald-400/20 to-emerald-500/5 text-emerald-200",
-    violet: "from-violet-400/20 to-violet-500/5 text-violet-200",
-    rose: "from-rose-400/20 to-rose-500/5 text-rose-200",
-    amber: "from-amber-400/20 to-amber-500/5 text-amber-200",
+    cyan: "bg-cyan-50 border-cyan-200 text-cyan-700",
+    emerald: "bg-emerald-50 border-emerald-200 text-emerald-700",
+    violet: "bg-violet-50 border-violet-200 text-violet-700",
+    rose: "bg-rose-50 border-rose-200 text-rose-700",
+    amber: "bg-amber-50 border-amber-200 text-amber-700",
   };
 
   return (
-    <div className="rounded-[26px] border border-white/10 bg-white/[0.04] p-5 shadow-[0_20px_60px_rgba(0,0,0,0.25)] backdrop-blur-sm">
+    <div className="rounded-[26px] border border-gray-200 bg-white p-5 shadow-lg">
       <div
-        className={`mb-3 inline-flex rounded-full border border-white/10 bg-gradient-to-r px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.28em] ${accentMap[accent]}`}
+        className={`mb-3 inline-flex rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.28em] ${accentMap[accent]}`}
       >
         {label}
       </div>
-      <div className={`text-3xl font-semibold tracking-tight text-white ${align === "right" ? "text-right" : ""}`}>
+      <div className={`text-3xl font-semibold tracking-tight text-gray-900 ${align === "right" ? "text-right" : ""}`}>
         {value}
       </div>
     </div>

@@ -32,7 +32,7 @@ function AppShell({ me, refreshMe, authLoading, setAuthLoading }) {
   }
 
   return (
-    <div className="min-h-screen bg-transparent text-white">
+    <div className="min-h-screen bg-transparent text-gray-900">
       <AppHeader
         me={me}
         pathname={location.pathname}
