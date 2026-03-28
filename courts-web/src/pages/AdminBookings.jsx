@@ -259,14 +259,14 @@ export default function AdminBookings() {
       </div>
 
       {(from || to) && (
-        <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-slate-300">
-          Rango activo: <span className="font-semibold text-white">{from || "—"}</span> →{" "}
-          <span className="font-semibold text-white">{to || "—"}</span>
+        <div className="rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-600">
+          Rango activo: <span className="font-semibold text-gray-900">{from || "—"}</span> →{" "}
+          <span className="font-semibold text-gray-900">{to || "—"}</span>
         </div>
       )}
 
       {error && (
-        <div className="rounded-2xl border border-rose-400/20 bg-rose-500/10 px-4 py-3 text-sm text-rose-100">
+        <div className="rounded-2xl border border-rose-200 bg-rose-100 px-4 py-3 text-sm text-rose-600">
           {error}
         </div>
       )}
@@ -285,7 +285,7 @@ export default function AdminBookings() {
         <div>
           <button
             onClick={() => setCourtId("")}
-            className="rounded-2xl border border-white/10 bg-white/[0.05] px-4 py-2 text-sm font-semibold text-slate-200 transition hover:bg-white/[0.09]"
+            className="rounded-2xl border border-gray-200 bg-gray-50 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:bg-gray-100"
           >
             Ver todas las canchas
           </button>

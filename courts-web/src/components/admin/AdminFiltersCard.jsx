@@ -4,7 +4,7 @@ import DatePicker from "./DatePicker";
 function FilterField({ label, children }) {
   return (
     <div>
-      <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.24em] text-slate-400">
+      <label className="mb-2 block text-xs font-semibold uppercase tracking-[0.24em] text-gray-500">
         {label}
       </label>
       {children}
@@ -31,19 +31,19 @@ export default function AdminFiltersCard({
   hasBookings,
 }) {
   const selectBase =
-  "h-14 w-full rounded-2xl border border-white/10 bg-slate-950/60 px-4 text-[15px] text-white outline-none transition focus:border-cyan-400/40 focus:outline-none focus:ring-0";
+  "h-14 w-full rounded-2xl border border-gray-200 bg-white px-4 text-[15px] text-gray-900 outline-none transition focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20";
 
   return (
-    <section className="relative z-20 rounded-[28px] border border-white/10 bg-white/[0.04] p-6 shadow-[0_20px_60px_rgba(0,0,0,0.22)] backdrop-blur-sm">
+    <section className="relative z-20 rounded-[28px] border border-gray-200 bg-white p-6 shadow-lg">
       <div className="mb-5 flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p className="text-xs uppercase tracking-[0.32em] text-slate-400">Filtros</p>
-          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-white">
+          <p className="text-xs uppercase tracking-[0.32em] text-gray-500">Filtros</p>
+          <h2 className="mt-2 text-2xl font-semibold tracking-tight text-gray-900">
             Explora reservas y resultados
           </h2>
         </div>
 
-        <div className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-2 text-xs font-semibold text-slate-300">
+        <div className="rounded-full border border-gray-200 bg-gray-50 px-3 py-2 text-xs font-semibold text-gray-600">
           Vista administrativa
         </div>
       </div>
@@ -92,12 +92,12 @@ export default function AdminFiltersCard({
       </div>
 
       <div className="mt-5 flex flex-col gap-4">
-        <label className="inline-flex h-14 w-fit cursor-pointer items-center gap-3 rounded-2xl border border-white/10 bg-slate-950/50 px-4 text-sm text-slate-200">
+        <label className="inline-flex h-14 w-fit cursor-pointer items-center gap-3 rounded-2xl border border-gray-200 bg-gray-50 px-4 text-sm text-gray-700">
           <input
             type="checkbox"
             checked={pending}
             onChange={(e) => setPending(e.target.checked)}
-            className="h-4 w-4 cursor-pointer rounded border-white/20 bg-slate-900"
+            className="h-4 w-4 cursor-pointer rounded border-gray-300 bg-white text-emerald-500 focus:ring-emerald-500"
           />
           Solo pendientes
         </label>
@@ -106,7 +106,7 @@ export default function AdminFiltersCard({
           <button
             onClick={load}
             disabled={loading}
-            className="h-14 cursor-pointer rounded-2xl border border-cyan-400/20 bg-cyan-500/10 px-5 text-sm font-semibold text-cyan-100 transition hover:bg-cyan-500/20 disabled:cursor-not-allowed disabled:opacity-50"
+            className="h-14 cursor-pointer rounded-2xl bg-emerald-500 px-5 text-sm font-semibold text-white transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {loading ? "Cargando..." : "Refrescar"}
           </button>
@@ -114,7 +114,7 @@ export default function AdminFiltersCard({
           <button
             onClick={clearFilters}
             disabled={loading}
-            className="h-14 cursor-pointer rounded-2xl border border-white/10 bg-white/[0.05] px-5 text-sm font-semibold text-slate-200 transition hover:bg-white/[0.09] disabled:cursor-not-allowed disabled:opacity-50"
+            className="h-14 cursor-pointer rounded-2xl border border-gray-200 bg-gray-50 px-5 text-sm font-semibold text-gray-700 transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
           >
             Limpiar filtros
           </button>
@@ -122,7 +122,7 @@ export default function AdminFiltersCard({
           <button
             onClick={exportExcel}
             disabled={loading || !hasBookings}
-            className="h-14 cursor-pointer rounded-2xl border border-emerald-400/20 bg-emerald-500/10 px-5 text-sm font-semibold text-emerald-100 transition hover:bg-emerald-500/20 disabled:cursor-not-allowed disabled:opacity-50"
+            className="h-14 cursor-pointer rounded-2xl border border-emerald-200 bg-emerald-50 px-5 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-100 disabled:cursor-not-allowed disabled:opacity-50"
           >
             Exportar Excel
           </button>

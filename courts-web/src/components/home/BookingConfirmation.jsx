@@ -4,40 +4,40 @@ export default function BookingConfirmation({ confirmation }) {
   if (!confirmation) return null;
 
   return (
-    <section className="rounded-3xl border border-emerald-400/20 bg-emerald-400/10 p-6 shadow-lg shadow-emerald-950/20">
+    <section className="rounded-3xl border border-emerald-200 bg-emerald-50 p-6 shadow-lg">
       <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
         <div>
-          <p className="text-sm uppercase tracking-[0.22em] text-emerald-300">
+          <p className="text-sm uppercase tracking-[0.22em] text-emerald-700">
             Reserva confirmada
           </p>
-          <h2 className="mt-2 text-2xl font-semibold text-white">
+          <h2 className="mt-2 text-2xl font-semibold text-gray-900">
             Tu reserva fue creada correctamente
           </h2>
 
           <div className="mt-5 grid gap-3 sm:grid-cols-3">
-            <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-4">
-              <p className="text-xs uppercase tracking-wide text-slate-400">
+            <div className="rounded-2xl border border-gray-200 bg-white p-4">
+              <p className="text-xs uppercase tracking-wide text-gray-500">
                 Booking ID
               </p>
-              <p className="mt-2 text-lg font-semibold text-white">
+              <p className="mt-2 text-lg font-semibold text-gray-900">
                 {confirmation.bookingId}
               </p>
             </div>
 
-            <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-4">
-              <p className="text-xs uppercase tracking-wide text-slate-400">
+            <div className="rounded-2xl border border-gray-200 bg-white p-4">
+              <p className="text-xs uppercase tracking-wide text-gray-500">
                 Total
               </p>
-              <p className="mt-2 text-lg font-semibold text-white">
+              <p className="mt-2 text-lg font-semibold text-gray-900">
                 S/ {confirmation.totalPrice}
               </p>
             </div>
 
-            <div className="rounded-2xl border border-white/10 bg-slate-950/40 p-4">
-              <p className="text-xs uppercase tracking-wide text-slate-400">
+            <div className="rounded-2xl border border-gray-200 bg-white p-4">
+              <p className="text-xs uppercase tracking-wide text-gray-500">
                 Token
               </p>
-              <p className="mt-2 break-all text-sm font-medium text-white">
+              <p className="mt-2 break-all text-sm font-medium text-gray-900">
                 {confirmation.token}
               </p>
             </div>

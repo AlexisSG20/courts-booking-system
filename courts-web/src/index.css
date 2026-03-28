@@ -2,8 +2,8 @@
 
 :root {
   font-family: Inter, system-ui, sans-serif;
-  color: #e5e7eb;
-  background: #020617;
+  color: #111827;
+  background: #0f172a;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -23,11 +23,15 @@ body,
 
 body {
   min-width: 320px;
-  background:
-    radial-gradient(circle at top, rgba(56, 189, 248, 0.08), transparent 30%),
-    radial-gradient(circle at bottom left, rgba(16, 185, 129, 0.06), transparent 25%),
-    #020617;
-  color: #e5e7eb;
+  background: #0f172a;
+  background-image: 
+    linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.85)),
+    url('https://images.unsplash.com/photo-1529900748604-07564a03e7a6?q=80&w=2070&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  color: #111827;
 }
 
 a {
@@ -50,7 +54,7 @@ input[type="month"] {
 input[type="date"]::-webkit-datetime-edit,
 input[type="month"]::-webkit-datetime-edit {
   padding-right: 0.5rem;
-  color: #f8fafc;
+  color: #111827;
   min-width: max-content;
 }
 
@@ -61,7 +65,7 @@ input[type="month"]::-webkit-datetime-edit-fields-wrapper {
 
 input[type="date"]::-webkit-datetime-edit-text,
 input[type="month"]::-webkit-datetime-edit-text {
-  color: rgba(248, 250, 252, 0.7);
+  color: rgba(17, 24, 39, 0.7);
   padding: 0 0.15rem;
 }
 
@@ -120,18 +124,18 @@ input[type="month"]::-webkit-datetime-edit-year-field:focus {
 
 /* Estilos para las opciones del select (dropdown) */
 select {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 select option {
-  background-color: #0f172a;
-  color: #f8fafc;
+  background-color: #ffffff;
+  color: #111827;
   padding: 0.5rem;
 }
 
 select option:hover,
 select option:focus,
 select option:checked {
-  background-color: #1e293b;
-  color: #fff;
+  background-color: #F3F4F6;
+  color: #111827;
 }
