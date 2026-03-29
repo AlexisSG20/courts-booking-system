@@ -189,16 +189,16 @@ export default function Home() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_82%_28%,rgba(255,255,255,0.08),transparent_20%),linear-gradient(270deg,rgba(2,6,23,0.04)_0%,rgba(2,6,23,0.015)_44%,transparent_80%)]" />
       </div>
 
-      <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 py-8 sm:px-6 lg:px-8">
+      <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-col gap-6 sm:gap-8 px-4 py-6 sm:py-8 md:px-6 lg:px-8">
         <HomeHero />
 
         {error && (
-          <div className="rounded-2xl border border-rose-400/20 bg-rose-400/10 px-4 py-3 text-sm text-rose-200">
+          <div className="rounded-lg sm:rounded-2xl border border-rose-400/20 bg-rose-400/10 px-4 py-3 text-xs sm:text-sm text-rose-200">
             {error}
           </div>
         )}
 
-        <section className="grid gap-8 xl:grid-cols-[1.1fr_0.9fr]">
+        <section className="grid gap-6 sm:gap-8 grid-cols-1 lg:grid-cols-[1.1fr_0.9fr]">
           <BookingFormCard
             courts={courts}
             courtId={courtId}

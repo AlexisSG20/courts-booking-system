@@ -16,9 +16,9 @@ export default function HomeHero() {
       <div className="absolute inset-0 bg-gradient-to-r from-slate-950/72 via-slate-900/58 to-slate-900/38" />
       <div className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-slate-950/34 to-transparent" />
 
-      <div className="relative z-10 grid gap-8 p-8 lg:grid-cols-[1.3fr_0.7fr] lg:items-end lg:p-10">
+      <div className="relative z-10 grid gap-6 sm:gap-8 p-4 sm:p-6 lg:p-8 lg:p-10 grid-cols-1 lg:grid-cols-[1.3fr_0.7fr] lg:items-end">
         <div>
-          <div className="mb-4 flex flex-wrap gap-3">
+          <div className="mb-3 sm:mb-4 flex flex-wrap gap-2 sm:gap-3">
             <span className="rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
               {"Reserva rápida"}
             </span>
@@ -30,35 +30,35 @@ export default function HomeHero() {
             </span>
           </div>
 
-          <p className="mb-3 text-sm uppercase tracking-[0.25em] text-white/70">
+          <p className="mb-2 sm:mb-3 text-xs uppercase tracking-[0.25em] text-white/70">
             Courts Booking System
           </p>
 
-          <h1 className="max-w-3xl text-4xl font-bold tracking-tight text-white md:text-5xl">
+          <h1 className="max-w-3xl text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold tracking-tight text-white">
             Reserva tu cancha en segundos, valida con QR y gestiona todo en un
             solo sistema.
           </h1>
 
-          <p className="mt-4 max-w-2xl text-base leading-7 text-slate-100/88 md:text-lg">
+          <p className="mt-3 sm:mt-4 max-w-2xl text-sm sm:text-base lg:text-lg leading-6 sm:leading-7 text-slate-100/88">
             {"Una experiencia moderna para reservas deportivas, con disponibilidad clara,"}
             {" confirmación inmediata y una interfaz pensada para sentirse como producto real."}
           </p>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
-          <div className="rounded-3xl border border-white/15 bg-white/10 p-5 backdrop-blur-md">
-            <p className="text-sm text-emerald-200">Disponibilidad</p>
-            <p className="mt-2 text-2xl font-semibold text-white">En tiempo real</p>
+        <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-3 lg:grid-cols-1">
+          <div className="rounded-2xl sm:rounded-3xl border border-white/15 bg-white/10 p-4 sm:p-5 backdrop-blur-md">
+            <p className="text-xs sm:text-sm text-emerald-200">Disponibilidad</p>
+            <p className="mt-2 text-lg sm:text-2xl font-semibold text-white">En tiempo real</p>
           </div>
 
-          <div className="rounded-3xl border border-white/15 bg-white/10 p-5 backdrop-blur-md">
-            <p className="text-sm text-emerald-200">Acceso</p>
-            <p className="mt-2 text-2xl font-semibold text-white">Token + QR</p>
+          <div className="rounded-2xl sm:rounded-3xl border border-white/15 bg-white/10 p-4 sm:p-5 backdrop-blur-md">
+            <p className="text-xs sm:text-sm text-emerald-200">Acceso</p>
+            <p className="mt-2 text-lg sm:text-2xl font-semibold text-white">Token + QR</p>
           </div>
 
-          <div className="rounded-3xl border border-white/15 bg-white/10 p-5 backdrop-blur-md">
-            <p className="text-sm text-emerald-200">{"Gestión"}</p>
-            <p className="mt-2 text-2xl font-semibold text-white">Vista admin</p>
+          <div className="rounded-2xl sm:rounded-3xl border border-white/15 bg-white/10 p-4 sm:p-5 backdrop-blur-md">
+            <p className="text-xs sm:text-sm text-emerald-200">{"Gestión"}</p>
+            <p className="mt-2 text-lg sm:text-2xl font-semibold text-white">Vista admin</p>
           </div>
         </div>
       </div>

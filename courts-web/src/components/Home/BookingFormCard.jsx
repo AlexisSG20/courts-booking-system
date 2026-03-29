@@ -31,21 +31,21 @@ export default function BookingFormCard({
       <div className="absolute inset-0 bg-gradient-to-b from-slate-950/34 via-slate-950/40 to-slate-950/48 backdrop-blur-[0.6px]" />
       <div className="absolute inset-x-0 top-0 h-44 bg-gradient-to-r from-emerald-400/8 via-cyan-300/6 to-transparent" />
 
-      <div className="relative z-10 p-7">
-        <div className="mb-7">
+      <div className="relative z-10 p-4 sm:p-6 lg:p-7">
+        <div className="mb-5 sm:mb-6 lg:mb-7">
           <p className="text-xs uppercase tracking-[0.3em] text-white/60">
             Nueva reserva
           </p>
-          <h2 className="mt-3 text-3xl font-semibold tracking-tight text-white">
+          <h2 className="mt-2 text-xl sm:text-2xl lg:text-3xl font-semibold tracking-tight text-white">
             Elige tu cancha y horario
           </h2>
-          <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-200/84">
+          <p className="mt-2 sm:mt-3 max-w-2xl text-xs sm:text-sm leading-6 sm:leading-7 text-slate-200/84">
             Selecciona la cancha, la fecha y la cantidad de personas. Luego elige
             una hora disponible para generar tu reserva.
           </p>
         </div>
 
-        <div className="grid gap-5 md:grid-cols-3">
+        <div className="grid gap-3 sm:gap-4 lg:gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           <div>
             <label className="mb-2 block text-sm font-medium text-white/80">
               Cancha
@@ -95,16 +95,16 @@ export default function BookingFormCard({
           </div>
         </div>
 
-        <div className="mt-7 rounded-3xl border border-emerald-400/35 bg-emerald-500/10 p-5 shadow-sm backdrop-blur-md">
-          <p className="text-sm text-emerald-200">{"Selecci\u00f3n actual"}</p>
-          <p className="mt-2 text-2xl font-semibold tracking-tight text-white">
+        <div className="mt-5 sm:mt-6 lg:mt-7 rounded-2xl sm:rounded-3xl border border-emerald-400/35 bg-emerald-500/10 p-4 sm:p-5 shadow-sm backdrop-blur-md">
+          <p className="text-xs sm:text-sm text-emerald-200">{"Selecci\u00f3n actual"}</p>
+          <p className="mt-2 text-lg sm:text-xl lg:text-2xl font-semibold tracking-tight text-white">
             {selectedHour == null
               ? "A\u00fan no seleccionaste horario"
               : `${selectedHour}:00 \u2014 ${endHour}:00`}
           </p>
-          <p className="mt-2 text-sm text-emerald-100/85">
+          <p className="mt-2 text-xs sm:text-sm text-emerald-100/85">
             {selectedHour == null
-              ? "Primero elige un bloque disponible en el panel de la derecha."
+              ? "Primero elige un bloque disponible en el panel de abajo."
               : "Tu reserva se generar\u00e1 con token y QR para validaci\u00f3n."}
           </p>
         </div>
@@ -112,7 +112,7 @@ export default function BookingFormCard({
         <button
           onClick={onCreateBooking}
           disabled={creating || selectedHour == null || !courtId || !date}
-          className="mt-7 inline-flex h-14 w-full cursor-pointer items-center justify-center rounded-2xl bg-emerald-500 px-5 text-base font-semibold text-white transition hover:scale-[0.99] hover:bg-emerald-600 disabled:cursor-not-allowed disabled:bg-white/10 disabled:text-white/35"
+          className="mt-5 sm:mt-6 lg:mt-7 inline-flex h-12 sm:h-13 lg:h-14 w-full cursor-pointer items-center justify-center rounded-xl sm:rounded-2xl bg-emerald-500 px-4 sm:px-5 text-sm sm:text-base font-semibold text-white transition hover:scale-[0.99] hover:bg-emerald-600 disabled:cursor-not-allowed disabled:bg-white/10 disabled:text-white/35"
         >
           {creating
             ? "Reservando..."
