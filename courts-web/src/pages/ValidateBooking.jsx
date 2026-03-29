@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { BrowserMultiFormatReader } from "@zxing/browser";
 import { apiFetch } from "../lib/api";
 import { getMe } from "../lib/me";
-import { logout as authLogout, getAccessToken } from "../lib/auth";
+import { getAccessToken } from "../lib/auth";
 
 import ValidateHero from "../components/validate/ValidateHero";
 import TokenValidationCard from "../components/validate/TokenValidationCard";
@@ -11,8 +10,47 @@ import ScannerCard from "../components/validate/ScannerCard";
 import BookingResultCard from "../components/validate/BookingResultCard";
 import ValidateEmptyState from "../components/validate/ValidateEmptyState";
 
+const sidePanelBase =
+  "pointer-events-none absolute inset-y-0 z-0 hidden overflow-hidden xl:block";
+const sidePanelWidth = "clamp(9rem, calc((100vw - 80rem) / 2 + 1.5rem), 20rem)";
+
+const leftSideVisual = {
+  backgroundImage:
+    [
+      "linear-gradient(90deg, rgba(2, 6, 23, 0.28) 0%, rgba(2, 6, 23, 0.09) 42%, rgba(2, 6, 23, 0.02) 68%, transparent 100%)",
+      "radial-gradient(circle at 38% 72%, rgba(255,255,255,0.96) 0 8%, rgba(203,213,225,0.92) 8% 10%, transparent 10.2% 100%)",
+      "linear-gradient(145deg, transparent 0 61%, rgba(255,255,255,0.26) 61% 62.4%, transparent 62.4% 100%)",
+      "linear-gradient(180deg, rgba(22, 163, 74, 0.9) 0%, rgba(21, 128, 61, 0.92) 100%)",
+    ].join(", "),
+  backgroundSize: "cover, 100% 100%, 100% 100%, 100% 100%",
+  backgroundRepeat: "no-repeat",
+  backgroundPosition: "center",
+  filter: "saturate(1.04) contrast(1.02) brightness(0.98)",
+  WebkitMaskImage:
+    "linear-gradient(90deg, rgba(0,0,0,0.98) 0%, rgba(0,0,0,0.94) 60%, rgba(0,0,0,0.58) 80%, transparent 100%)",
+  maskImage:
+    "linear-gradient(90deg, rgba(0,0,0,0.98) 0%, rgba(0,0,0,0.94) 60%, rgba(0,0,0,0.58) 80%, transparent 100%)",
+};
+
+const rightSideVisual = {
+  backgroundImage:
+    [
+      "linear-gradient(270deg, rgba(2, 6, 23, 0.38) 0%, rgba(2, 6, 23, 0.16) 42%, rgba(2, 6, 23, 0.04) 68%, transparent 100%)",
+      "radial-gradient(circle at 54% 32%, rgba(255,255,255,0.96) 0 7%, rgba(203,213,225,0.92) 7% 8.8%, transparent 9% 100%)",
+      "linear-gradient(205deg, transparent 0 56%, rgba(255,255,255,0.22) 56% 57.2%, transparent 57.2% 100%)",
+      "linear-gradient(180deg, rgba(21, 128, 61, 0.94) 0%, rgba(20, 83, 45, 0.96) 100%)",
+    ].join(", "),
+  backgroundSize: "cover, 100% 100%, 100% 100%, 100% 100%",
+  backgroundRepeat: "no-repeat",
+  backgroundPosition: "center",
+  filter: "saturate(1.06) contrast(1.04) brightness(1.01)",
+  WebkitMaskImage:
+    "linear-gradient(270deg, rgba(0,0,0,0.98) 0%, rgba(0,0,0,0.94) 60%, rgba(0,0,0,0.58) 80%, transparent 100%)",
+  maskImage:
+    "linear-gradient(270deg, rgba(0,0,0,0.98) 0%, rgba(0,0,0,0.94) 60%, rgba(0,0,0,0.58) 80%, transparent 100%)",
+};
+
 export default function ValidateBooking({ onAuthChange }) {
-  const navigate = useNavigate();
   const scannedRef = useRef(false);
   const readerRef = useRef(null);
   const videoRef = useRef(null);
@@ -29,8 +67,7 @@ export default function ValidateBooking({ onAuthChange }) {
   const [booking, setBooking] = useState(null);
   const [error, setError] = useState("");
 
-  const [me, setMe] = useState(null);
-  const [authLoading, setAuthLoading] = useState(false);
+  const [, setMe] = useState(null);
 
   const loadMe = async () => {
     if (!getAccessToken()) {
@@ -45,25 +82,6 @@ export default function ValidateBooking({ onAuthChange }) {
     loadMe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const doLogout = async () => {
-    setError("");
-    setAuthLoading(true);
-    try {
-      await authLogout();
-      setMe(null);
-      await onAuthChange?.();
-      setBooking(null);
-      setToken("");
-    } catch {
-      setMe(null);
-      await onAuthChange?.();
-      setBooking(null);
-      setToken("");
-    } finally {
-      setAuthLoading(false);
-    }
-  };
 
   const validate = async (maybeToken) => {
     const t = String(maybeToken ?? token).trim();
@@ -80,18 +98,18 @@ export default function ValidateBooking({ onAuthChange }) {
       const res = await apiFetch(`/bookings/by-token/${t}`);
 
       if (res.status === 401 || res.status === 403) {
-        setError("🔒 No autorizado. Inicia sesión como STAFF/ADMIN.");
+        setError("No autorizado. Inicia sesion como STAFF/ADMIN.");
         return;
       }
 
       if (res.status === 404) {
-        setError("❌ No existe una reserva con ese token.");
+        setError("No existe una reserva con ese token.");
         return;
       }
 
       if (!res.ok) {
         const err = await res.json().catch(() => null);
-        setError(`⚠️ ${err?.message ?? `Error (${res.status})`}`);
+        setError(err?.message ?? `Error (${res.status})`);
         return;
       }
 
@@ -118,20 +136,19 @@ export default function ValidateBooking({ onAuthChange }) {
       const data = await res.json().catch(() => null);
 
       if (res.status === 401 || res.status === 403) {
-        setError("🔒 No autorizado. Inicia sesión como STAFF/ADMIN.");
+        setError("No autorizado. Inicia sesion como STAFF/ADMIN.");
         return;
       }
 
       if (!res.ok) {
-        setError(`⚠️ ${data?.message ?? `Error (${res.status})`}`);
+        setError(data?.message ?? `Error (${res.status})`);
         return;
       }
 
       if (data?.booking) setBooking(data.booking);
 
-      if (data?.checkedIn === true) {
-      } else if (data?.alreadyUsed) {
-        setError("🚫 Este token ya fue usado.");
+      if (data?.alreadyUsed) {
+        setError("Este token ya fue usado.");
       }
     } catch {
       setError("Failed to fetch (backend no reachable)");
@@ -145,11 +162,11 @@ export default function ValidateBooking({ onAuthChange }) {
     setBooking(null);
 
     if (!window.isSecureContext) {
-      setError("La cámara requiere HTTPS (o localhost).");
+      setError("La camara requiere HTTPS (o localhost).");
       return;
     }
     if (!navigator.mediaDevices?.getUserMedia) {
-      setError("Este navegador no soporta cámara.");
+      setError("Este navegador no soporta camara.");
       return;
     }
 
@@ -225,9 +242,7 @@ export default function ValidateBooking({ onAuthChange }) {
         readerRef.current = reader;
 
         await reader.decodeFromVideoElement(videoRef.current, (result) => {
-          if (!scanningActiveRef.current) return;
-          if (!result) return;
-          if (scannedRef.current) return;
+          if (!scanningActiveRef.current || !result || scannedRef.current) return;
 
           scannedRef.current = true;
 
@@ -241,7 +256,7 @@ export default function ValidateBooking({ onAuthChange }) {
         });
       } catch (e) {
         if (!cancelled) {
-          setError(`No se pudo abrir la cámara: ${e?.name ?? "Error"}`);
+          setError(`No se pudo abrir la camara: ${e?.name ?? "Error"}`);
           stopScan();
         }
       }
@@ -257,45 +272,62 @@ export default function ValidateBooking({ onAuthChange }) {
   }, [scanning]);
 
   return (
-    <main className="mx-auto w-full max-w-7xl px-4 py-8 md:px-6 md:py-10">
-      <div className="grid gap-8">
-        <ValidateHero />
+    <main className="relative min-h-[calc(100vh-73px)] overflow-x-hidden bg-transparent text-white">
+      <div
+        aria-hidden="true"
+        className={`${sidePanelBase} left-0 opacity-66`}
+        style={{ ...leftSideVisual, width: sidePanelWidth }}
+      >
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_24%,rgba(255,255,255,0.08),transparent_22%),linear-gradient(90deg,rgba(2,6,23,0.05)_0%,rgba(2,6,23,0.015)_44%,transparent_80%)]" />
+      </div>
 
-        <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
-          <div className="grid gap-6">
+      <div
+        aria-hidden="true"
+        className={`${sidePanelBase} right-0 opacity-70`}
+        style={{ ...rightSideVisual, width: sidePanelWidth }}
+      >
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_82%_28%,rgba(255,255,255,0.08),transparent_20%),linear-gradient(270deg,rgba(2,6,23,0.05)_0%,rgba(2,6,23,0.015)_44%,transparent_80%)]" />
+      </div>
 
-            <TokenValidationCard
-              token={token}
-              setToken={setToken}
-              loading={loading}
-              scanning={scanning}
-              validate={validate}
-              startScan={startScan}
-              stopScan={stopScan}
-            />
+      <div className="relative mx-auto w-full max-w-7xl px-4 py-8 md:px-6 md:py-10">
+        <div className="grid gap-8">
+          <ValidateHero />
 
-            {error && (
-              <div className="rounded-2xl border border-rose-200 bg-rose-100 px-4 py-3 text-sm text-rose-600">
-                {error}
-              </div>
-            )}
-          </div>
+          {error && (
+            <div className="rounded-2xl border border-rose-400/24 bg-rose-400/10 px-4 py-3 text-sm text-rose-100">
+              {error}
+            </div>
+          )}
 
-          <div className="grid gap-6">
-            <ValidateEmptyState scanning={scanning} booking={booking} />
+          <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
+            <div className="grid gap-6">
+              <TokenValidationCard
+                token={token}
+                setToken={setToken}
+                loading={loading}
+                scanning={scanning}
+                validate={validate}
+                startScan={startScan}
+                stopScan={stopScan}
+              />
+            </div>
 
-            <ScannerCard
-              scanning={scanning}
-              videoReady={videoReady}
-              videoRef={videoRef}
-              onVideoPlaying={() => setVideoReady(true)}
-            />
+            <div className="grid gap-6">
+              <ValidateEmptyState scanning={scanning} booking={booking} />
 
-            <BookingResultCard
-              booking={booking}
-              checkingIn={checkingIn}
-              checkIn={checkIn}
-            />
+              <ScannerCard
+                scanning={scanning}
+                videoReady={videoReady}
+                videoRef={videoRef}
+                onVideoPlaying={() => setVideoReady(true)}
+              />
+
+              <BookingResultCard
+                booking={booking}
+                checkingIn={checkingIn}
+                checkIn={checkIn}
+              />
+            </div>
           </div>
         </div>
       </div>

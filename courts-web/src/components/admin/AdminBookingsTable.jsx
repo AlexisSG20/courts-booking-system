@@ -21,37 +21,39 @@ export default function AdminBookingsTable({
   }
 
   return (
-    <section className="overflow-hidden rounded-[28px] border border-gray-200 bg-white shadow-lg">
-      <div className="border-b border-gray-200 px-6 py-5">
-        <p className="text-xs uppercase tracking-[0.32em] text-gray-500">Listado</p>
-        <h2 className="mt-2 text-2xl font-semibold tracking-tight text-gray-900">
+    <section className="overflow-hidden rounded-[2rem] border border-white/12 bg-slate-950/44 shadow-[0_24px_80px_rgba(15,23,42,0.2)] backdrop-blur-md">
+      <div className="border-b border-white/10 px-6 py-5">
+        <p className="text-xs uppercase tracking-[0.32em] text-white/52">
+          Listado
+        </p>
+        <h2 className="mt-2 text-2xl font-semibold tracking-tight text-white">
           Reservas registradas
         </h2>
       </div>
 
       <div className="overflow-x-auto">
         <table className="min-w-[980px] w-full">
-          <thead className="bg-gray-50">
+          <thead className="bg-white/6">
             <tr className="text-left">
-              <th className="px-6 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-gray-500">
+              <th className="px-6 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-white/48">
                 Fecha
               </th>
-              <th className="px-4 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-gray-500">
+              <th className="px-4 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-white/48">
                 Cancha
               </th>
-              <th className="px-4 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-gray-500">
+              <th className="px-4 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-white/48">
                 Horario
               </th>
-              <th className="px-4 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-gray-500">
+              <th className="px-4 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-white/48">
                 Personas
               </th>
-              <th className="px-4 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-gray-500">
+              <th className="px-4 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-white/48">
                 Total
               </th>
-              <th className="px-4 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-gray-500">
+              <th className="px-4 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-white/48">
                 Token
               </th>
-              <th className="px-4 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-gray-500">
+              <th className="px-4 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-white/48">
                 Estado
               </th>
             </tr>
@@ -62,31 +64,35 @@ export default function AdminBookingsTable({
               const used = Boolean(b.usedAt);
 
               return (
-                <tr key={b.id} className="border-t border-gray-100 hover:bg-gray-50">
-                  <td className="px-6 py-4 text-sm text-gray-700">{b.date}</td>
+                <tr key={b.id} className="border-t border-white/8 hover:bg-white/4">
+                  <td className="px-6 py-4 text-sm text-slate-200/76">
+                    {b.date}
+                  </td>
 
-                  <td className="px-4 py-4 text-sm text-gray-900 font-medium">
+                  <td className="px-4 py-4 text-sm font-medium text-white">
                     {b.court?.name ?? `#${b.courtId}`}
                   </td>
 
-                  <td className="px-4 py-4 text-sm text-gray-700">
+                  <td className="px-4 py-4 text-sm text-slate-200/76">
                     {b.startHour}:00 - {b.endHour}:00
                   </td>
 
-                  <td className="px-4 py-4 text-sm text-gray-700">{b.peopleCount}</td>
+                  <td className="px-4 py-4 text-sm text-slate-200/76">
+                    {b.peopleCount}
+                  </td>
 
-                  <td className="px-4 py-4 text-sm font-semibold text-gray-900">
+                  <td className="px-4 py-4 text-sm font-semibold text-white">
                     {money(b.totalPrice)}
                   </td>
 
                   <td className="px-4 py-4">
                     <div className="flex items-center gap-2">
-                      <code className="max-w-[240px] truncate rounded-xl border border-gray-200 bg-gray-100 px-3 py-2 text-xs text-gray-700">
+                      <code className="max-w-[240px] truncate rounded-xl border border-white/10 bg-white/6 px-3 py-2 text-xs text-slate-200/78">
                         {b.token}
                       </code>
                       <button
                         onClick={() => copy(b.token)}
-                        className="cursor-pointer rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-xs font-semibold text-gray-700 transition hover:bg-gray-100"
+                        className="cursor-pointer rounded-xl border border-white/12 bg-white/6 px-3 py-2 text-xs font-semibold text-white/82 transition hover:bg-white/10"
                       >
                         Copiar
                       </button>
@@ -96,17 +102,19 @@ export default function AdminBookingsTable({
                   <td className="px-4 py-4">
                     {used ? (
                       <div className="space-y-2">
-                        <div className="flex items-center gap-2 text-sm font-medium text-emerald-600">
+                        <div className="flex items-center gap-2 text-sm font-medium text-emerald-200">
                           <StatusDot tone="emerald" />
                           <span>Ingreso registrado</span>
                         </div>
-                        <p className="text-xs text-gray-500">{formatLimaDateTime(b.usedAt)}</p>
+                        <p className="text-xs text-white/48">
+                          {formatLimaDateTime(b.usedAt)}
+                        </p>
                       </div>
                     ) : (
                       <div className="flex items-center gap-3">
                         <button
                           onClick={() => checkIn(b.token)}
-                          className="cursor-pointer rounded-2xl bg-emerald-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-600"
+                          className="cursor-pointer rounded-2xl bg-emerald-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-400"
                         >
                           Registrar ingreso
                         </button>

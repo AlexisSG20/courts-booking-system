@@ -173,7 +173,6 @@ export default function Home() {
 
   return (
     <main className="relative min-h-screen overflow-x-hidden bg-transparent text-white">
-      {/* Imagen decorativa izquierda - Chimpunes */}
       <div
         aria-hidden="true"
         className={`${sidePanelBase} left-0 opacity-68`}
@@ -182,7 +181,6 @@ export default function Home() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_24%,rgba(255,255,255,0.08),transparent_20%),linear-gradient(90deg,rgba(2,6,23,0.04)_0%,rgba(2,6,23,0.015)_44%,transparent_80%)]" />
       </div>
 
-      {/* Imagen decorativa derecha - Futbolista */}
       <div
         aria-hidden="true"
         className={`${sidePanelBase} right-0 opacity-68`}

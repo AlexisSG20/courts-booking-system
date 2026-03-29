@@ -31,14 +31,19 @@ export default function AppHeader({ me, pathname, authLoading, onLogout }) {
             </p>
           </div>
 
-          <nav className="flex flex-wrap items-center gap-2 xl:justify-center">
+          <nav
+            className={[
+              "flex flex-wrap items-center gap-2 xl:min-w-0",
+              me ? "xl:justify-center" : "xl:justify-end",
+            ].join(" ")}
+          >
             <NavLinkItem to="/" isActive={pathname === "/"}>
               Reservar
             </NavLinkItem>
 
             {!me && (
               <NavLinkItem to="/login" isActive={pathname === "/login"}>
-                {"Iniciar sesi\u00f3n"}
+                {"Iniciar sesión"}
               </NavLinkItem>
             )}
 
@@ -64,12 +69,24 @@ export default function AppHeader({ me, pathname, authLoading, onLogout }) {
             )}
           </nav>
 
-          <div className="xl:justify-self-end">
-            <SessionPill
-              me={me}
-              loading={authLoading}
-              onLogout={onLogout}
-            />
+          {(me || authLoading) && (
+            <div className="hidden justify-end lg:flex xl:hidden">
+              <SessionPill
+                me={me}
+                loading={authLoading}
+                onLogout={onLogout}
+              />
+            </div>
+          )}
+
+          <div className="hidden items-center justify-end xl:flex">
+            {me || authLoading ? (
+              <SessionPill
+                me={me}
+                loading={authLoading}
+                onLogout={onLogout}
+              />
+            ) : null}
           </div>
         </div>
       </div>

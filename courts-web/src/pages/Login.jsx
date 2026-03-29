@@ -2,6 +2,55 @@ import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { login, getAccessToken } from "../lib/auth";
 
+const sidePanelBase =
+  "pointer-events-none absolute inset-y-0 z-0 hidden overflow-hidden xl:block";
+const sidePanelWidth = "clamp(10rem, calc((100vw - 80rem) / 2 + 2rem), 22rem)";
+const rightSidePanelWidth = "clamp(10rem, calc((100vw - 80rem) / 2 + 2rem), 22rem)";
+
+const leftSideVisual = {
+  backgroundImage:
+    "linear-gradient(90deg, rgba(2, 6, 23, 0.24) 0%, rgba(2, 6, 23, 0.08) 42%, rgba(2, 6, 23, 0.02) 68%, transparent 100%), url('https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=1200&h=1800&q=80')",
+  backgroundSize: "cover",
+  backgroundRepeat: "no-repeat",
+  backgroundPosition: "20% center",
+  filter: "grayscale(8%) saturate(1.04) contrast(1.08) brightness(0.98)",
+  WebkitMaskImage:
+    "linear-gradient(90deg, rgba(0,0,0,0.98) 0%, rgba(0,0,0,0.96) 60%, rgba(0,0,0,0.62) 80%, transparent 100%)",
+  maskImage:
+    "linear-gradient(90deg, rgba(0,0,0,0.98) 0%, rgba(0,0,0,0.96) 60%, rgba(0,0,0,0.62) 80%, transparent 100%)",
+};
+
+const rightSideVisual = {
+  backgroundImage:
+    "linear-gradient(270deg, rgba(2, 6, 23, 0.42) 0%, rgba(2, 6, 23, 0.22) 42%, rgba(2, 6, 23, 0.06) 68%, transparent 100%), url('https://images.unsplash.com/photo-1552318965-6e6be7484ada?auto=format&fit=crop&w=1200&h=1800&q=80')",
+  backgroundSize: "cover",
+  backgroundRepeat: "no-repeat",
+  backgroundPosition: "72% center",
+  filter: "grayscale(4%) saturate(1.08) contrast(1.06) brightness(1.02)",
+  WebkitMaskImage:
+    "linear-gradient(270deg, rgba(0,0,0,0.98) 0%, rgba(0,0,0,0.96) 60%, rgba(0,0,0,0.62) 80%, transparent 100%)",
+  maskImage:
+    "linear-gradient(270deg, rgba(0,0,0,0.98) 0%, rgba(0,0,0,0.96) 60%, rgba(0,0,0,0.62) 80%, transparent 100%)",
+};
+
+const formSideVisual = {
+  backgroundImage:
+    "linear-gradient(270deg, rgba(15, 23, 42, 0.06) 0%, rgba(15, 23, 42, 0.18) 34%, rgba(15, 23, 42, 0.68) 68%, rgba(15, 23, 42, 0.9) 100%), url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=1200&h=1600&q=80')",
+  backgroundSize: "cover",
+  backgroundRepeat: "no-repeat",
+  backgroundPosition: "58% center",
+  filter: "grayscale(2%) saturate(1.04) contrast(1.04) brightness(0.88)",
+};
+
+const heroCardVisual = {
+  backgroundImage:
+    "linear-gradient(135deg, rgba(15, 23, 42, 0.88) 0%, rgba(15, 23, 42, 0.72) 46%, rgba(15, 23, 42, 0.6) 100%), url('https://images.unsplash.com/photo-1517927033932-b3d18e61fb3a?auto=format&fit=crop&w=1200&h=1200&q=80')",
+  backgroundSize: "cover",
+  backgroundRepeat: "no-repeat",
+  backgroundPosition: "82% center",
+  filter: "grayscale(6%) saturate(1.02) contrast(1.04) brightness(0.94)",
+};
+
 function getRedirectByRole(role) {
   return role === "ADMIN" ? "/admin/bookings" : "/validate";
 }
@@ -43,161 +92,195 @@ export default function Login({ onAuthChange, me }) {
   }
 
   return (
-    <main className="min-h-[calc(100vh-81px)] bg-transparent text-gray-900">
-      <section className="mx-auto flex w-full max-w-7xl items-center px-6 py-10 sm:px-8 lg:px-10">
-        <div className="grid w-full gap-8 lg:grid-cols-[1.1fr_0.9fr]">
-          <div className="rounded-[32px] border border-gray-200 bg-white p-7 shadow-lg sm:p-10">
-            <div className="mb-6 flex flex-wrap gap-3">
-              <span className="rounded-full border border-emerald-200 bg-emerald-50 px-4 py-1 text-[11px] uppercase tracking-[0.28em] text-emerald-700">
-                acceso seguro
-              </span>
-              <span className="rounded-full border border-violet-200 bg-violet-50 px-4 py-1 text-[11px] uppercase tracking-[0.28em] text-violet-700">
-                admin + staff
-              </span>
-              <span className="rounded-full border border-gray-200 bg-gray-50 px-4 py-1 text-[11px] uppercase tracking-[0.28em] text-gray-600">
-                courts booking system
-              </span>
-            </div>
+    <main className="relative min-h-[calc(100vh-73px)] overflow-x-hidden bg-transparent text-white">
+      <div
+        aria-hidden="true"
+        className={`${sidePanelBase} left-0 opacity-68`}
+        style={{ ...leftSideVisual, width: sidePanelWidth }}
+      >
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_24%,rgba(255,255,255,0.08),transparent_20%),linear-gradient(90deg,rgba(2,6,23,0.04)_0%,rgba(2,6,23,0.015)_44%,transparent_80%)]" />
+      </div>
 
-            <p className="mb-3 text-[12px] uppercase tracking-[0.42em] text-gray-500">
-              portfolio project
-            </p>
+      <div
+        aria-hidden="true"
+        className={`${sidePanelBase} right-0 opacity-82`}
+        style={{ ...rightSideVisual, width: rightSidePanelWidth }}
+      >
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_82%_28%,rgba(255,255,255,0.09),transparent_20%),linear-gradient(270deg,rgba(2,6,23,0.06)_0%,rgba(2,6,23,0.02)_44%,transparent_80%)]" />
+      </div>
 
-            <h1 className="max-w-3xl text-4xl font-semibold leading-tight text-gray-900 sm:text-5xl">
-              Inicia sesión y entra al flujo correcto según tu rol.
-            </h1>
+      <section className="relative z-10 mx-auto flex w-full max-w-7xl items-center px-4 py-8 sm:px-6 lg:min-h-[calc(100vh-73px)] lg:px-8">
+        <div className="grid w-full gap-8 xl:grid-cols-[1.05fr_0.95fr]">
+          <div className="relative isolate overflow-hidden rounded-[2rem] border border-white/15 bg-slate-950/42 p-7 shadow-[0_24px_80px_rgba(15,23,42,0.22)] backdrop-blur-md sm:p-10">
+            <div
+              className="absolute inset-0 scale-[1.01] bg-cover bg-no-repeat"
+              style={heroCardVisual}
+            />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(16,185,129,0.14),transparent_26%),radial-gradient(circle_at_85%_18%,rgba(56,189,248,0.1),transparent_22%),linear-gradient(135deg,rgba(15,23,42,0.84),rgba(15,23,42,0.6))]" />
+            <div className="absolute inset-y-0 right-0 w-[38%] bg-[linear-gradient(270deg,rgba(255,255,255,0.08)_0%,rgba(255,255,255,0.015)_28%,transparent_66%)]" />
+            <div className="relative z-10">
+              <div className="mb-6 flex flex-wrap gap-2">
+                <span className="rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 text-[10px] uppercase tracking-[0.22em] text-emerald-100 sm:px-4 sm:text-[11px]">
+                  acceso seguro
+                </span>
+                <span className="rounded-full border border-sky-400/30 bg-sky-400/10 px-3 py-1 text-[10px] uppercase tracking-[0.22em] text-sky-100 sm:px-4 sm:text-[11px]">
+                  admin + staff
+                </span>
+                <span className="rounded-full border border-white/12 bg-white/6 px-3 py-1 text-[10px] uppercase tracking-[0.16em] text-white/65 sm:px-4 sm:text-[11px]">
+                  courts booking system
+                </span>
+              </div>
 
-            <p className="mt-6 max-w-2xl text-base leading-8 text-gray-600 sm:text-lg">
-              Usa una sola pantalla para autenticarte. El sistema detecta si eres
-              <span className="font-medium text-emerald-600"> staff </span>
-              o
-              <span className="font-medium text-violet-600"> administrador </span>
-              y te redirige a la vista adecuada usando el auth actual del proyecto.
-            </p>
+              <p className="mb-3 text-[12px] uppercase tracking-[0.42em] text-white/56">
+                portfolio project
+              </p>
 
-            <div className="mt-10 grid gap-4 sm:grid-cols-3">
-              <article className="rounded-3xl border border-gray-200 bg-gray-50 p-5">
-                <p className="text-sm text-gray-500">Acceso</p>
-                <p className="mt-3 text-2xl font-semibold text-gray-900">JWT</p>
-              </article>
+              <h1 className="max-w-3xl text-4xl font-semibold leading-tight text-white sm:text-5xl">
+                Inicia sesión y entra al flujo correcto según tu rol.
+              </h1>
 
-              <article className="rounded-3xl border border-gray-200 bg-gray-50 p-5">
-                <p className="text-sm text-gray-500">Redirección</p>
-                <p className="mt-3 text-2xl font-semibold text-gray-900">Por rol</p>
-              </article>
+              <p className="mt-6 max-w-2xl text-base leading-8 text-slate-200/84 sm:text-lg">
+                Usa una sola pantalla para autenticarte. El sistema detecta si
+                eres
+                <span className="font-medium text-emerald-200"> staff </span>
+                o
+                <span className="font-medium text-sky-200"> administrador </span>
+                y te redirige a la vista adecuada usando el auth actual del
+                proyecto.
+              </p>
 
-              <article className="rounded-3xl border border-gray-200 bg-gray-50 p-5">
-                <p className="text-sm text-gray-500">Sesión</p>
-                <p className="mt-3 text-2xl font-semibold text-gray-900">Actual</p>
-              </article>
+              <div className="mt-10 grid gap-4 sm:grid-cols-3">
+                <article className="rounded-3xl border border-white/12 bg-slate-950/34 p-5 backdrop-blur-sm">
+                  <p className="text-sm text-white/56">Acceso</p>
+                  <p className="mt-3 text-2xl font-semibold text-white">JWT</p>
+                </article>
+
+                <article className="rounded-3xl border border-white/12 bg-slate-950/34 p-5 backdrop-blur-sm">
+                  <p className="text-sm text-white/56">Redirección</p>
+                  <p className="mt-3 text-2xl font-semibold text-white">Por rol</p>
+                </article>
+
+                <article className="rounded-3xl border border-white/12 bg-slate-950/34 p-5 backdrop-blur-sm">
+                  <p className="text-sm text-white/56">Sesión</p>
+                  <p className="mt-3 text-2xl font-semibold text-white">Actual</p>
+                </article>
+              </div>
             </div>
           </div>
 
-          <div className="rounded-[32px] border border-gray-200 bg-white p-6 shadow-lg sm:p-8">
-            <div className="mb-6 flex items-start justify-between gap-4">
-              <div>
-                <p className="text-[12px] uppercase tracking-[0.35em] text-gray-500">
-                  iniciar sesión
-                </p>
-                <h2 className="mt-3 text-3xl font-semibold text-gray-900">
-                  Acceso al sistema
-                </h2>
-                <p className="mt-3 max-w-md text-sm leading-7 text-gray-600">
-                  Ingresa con tu cuenta actual. Si eres staff irás a validación; si
-                  eres admin irás al panel administrativo.
-                </p>
+          <div className="relative isolate overflow-hidden rounded-[2rem] border border-white/15 bg-slate-950/44 p-6 shadow-[0_24px_80px_rgba(15,23,42,0.24)] backdrop-blur-md sm:p-8">
+            <div
+              className="absolute inset-0 scale-[1.01] bg-cover bg-no-repeat"
+              style={formSideVisual}
+            />
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(15,23,42,0.82),rgba(15,23,42,0.7)),radial-gradient(circle_at_top_right,rgba(132,204,22,0.14),transparent_24%)]" />
+            <div className="absolute inset-y-0 right-0 w-[44%] bg-[linear-gradient(270deg,rgba(255,255,255,0.08)_0%,rgba(255,255,255,0.025)_24%,transparent_62%)]" />
+            <div className="relative z-10">
+              <div className="mb-6 flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-[12px] uppercase tracking-[0.35em] text-white/56">
+                    iniciar sesión
+                  </p>
+                  <h2 className="mt-3 text-3xl font-semibold text-white">
+                    Acceso al sistema
+                  </h2>
+                  <p className="mt-3 max-w-md text-sm leading-7 text-slate-200/82">
+                    Ingresa con tu cuenta actual. Si eres staff irás a validación;
+                    si eres admin irás al panel administrativo.
+                  </p>
+                </div>
+
+                <span className="whitespace-nowrap rounded-xl border border-emerald-300/18 bg-emerald-400/14 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-emerald-100 shadow-[0_10px_24px_rgba(16,185,129,0.12)] backdrop-blur-sm">
+                  Auth real
+                </span>
               </div>
 
-              <span className="rounded-2xl bg-emerald-500 px-4 py-2 text-sm font-medium text-white">
-                Auth real
-              </span>
-            </div>
-
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div>
-                <label
-                  htmlFor="email"
-                  className="mb-2 block text-sm font-medium text-gray-700"
-                >
-                  Correo
-                </label>
-                <input
-                  id="email"
-                  type="email"
-                  autoComplete="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@courts.com"
-                  className="h-14 w-full rounded-2xl border border-gray-200 bg-white px-4 text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
-                />
-              </div>
-
-              <div>
-                <div className="mb-2 flex items-center justify-between gap-3">
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <div>
                   <label
-                    htmlFor="password"
-                    className="block text-sm font-medium text-gray-700"
+                    htmlFor="email"
+                    className="mb-2 block text-sm font-medium text-slate-100"
                   >
-                    Contraseña
+                    Correo
                   </label>
-
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword((prev) => !prev)}
-                    className="cursor-pointer text-sm text-emerald-600 transition hover:text-emerald-700"
-                  >
-                    {showPassword ? "Ocultar" : "Mostrar"}
-                  </button>
+                  <input
+                    id="email"
+                    type="email"
+                    autoComplete="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="admin@courts.com"
+                    className="h-14 w-full rounded-2xl border border-white/10 bg-white/8 px-4 text-white outline-none transition placeholder:text-slate-300/45 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/20"
+                  />
                 </div>
 
-                <input
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  autoComplete="current-password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Tu contraseña"
-                  className="h-14 w-full rounded-2xl border border-gray-200 bg-white px-4 text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
-                />
+                <div>
+                  <div className="mb-2 flex items-center justify-between gap-3">
+                    <label
+                      htmlFor="password"
+                      className="block text-sm font-medium text-slate-100"
+                    >
+                      Contraseña
+                    </label>
+
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword((prev) => !prev)}
+                      className="cursor-pointer text-sm text-emerald-300 transition hover:text-emerald-200"
+                    >
+                      {showPassword ? "Ocultar" : "Mostrar"}
+                    </button>
+                  </div>
+
+                  <input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    autoComplete="current-password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Tu contraseña"
+                    className="h-14 w-full rounded-2xl border border-white/10 bg-white/8 px-4 text-white outline-none transition placeholder:text-slate-300/45 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/20"
+                  />
+                </div>
+
+                {error ? (
+                  <div className="rounded-2xl border border-rose-400/20 bg-rose-400/10 px-4 py-3 text-sm text-rose-200">
+                    {error}
+                  </div>
+                ) : null}
+
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="flex h-14 w-full cursor-pointer items-center justify-center rounded-2xl bg-emerald-500 px-5 text-base font-medium text-white transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {submitting ? "Ingresando..." : "Iniciar sesión"}
+                </button>
+              </form>
+
+              <div className="mt-6 rounded-3xl border border-white/10 bg-slate-950/30 p-5 backdrop-blur-sm">
+                <p className="text-[12px] uppercase tracking-[0.3em] text-white/56">
+                  flujo esperado
+                </p>
+
+                <div className="mt-4 space-y-3 text-sm text-slate-200/82">
+                  <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/6 px-4 py-3">
+                    <span>Cuenta STAFF</span>
+                    <span className="text-emerald-300">/validate</span>
+                  </div>
+
+                  <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/6 px-4 py-3">
+                    <span>Cuenta ADMIN</span>
+                    <span className="text-sky-300">/admin/bookings</span>
+                  </div>
+                </div>
               </div>
 
-              {error ? (
-                <div className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-600">
-                  {error}
-                </div>
-              ) : null}
-
-              <button
-                type="submit"
-                disabled={submitting}
-                className="flex h-14 w-full cursor-pointer items-center justify-center rounded-2xl bg-emerald-500 px-5 text-base font-medium text-white transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:opacity-60"
-              >
-                {submitting ? "Ingresando..." : "Iniciar sesión"}
-              </button>
-            </form>
-
-            <div className="mt-6 rounded-3xl border border-gray-200 bg-gray-50 p-5">
-              <p className="text-[12px] uppercase tracking-[0.3em] text-gray-500">
-                flujo esperado
+              <p className="mt-5 text-xs leading-6 text-slate-300/62">
+                Esta pantalla reutiliza el backend actual, el access token y el
+                refresh token ya existentes en tu proyecto.
               </p>
-
-              <div className="mt-4 space-y-3 text-sm text-gray-600">
-                <div className="flex items-center justify-between rounded-2xl border border-gray-200 bg-white px-4 py-3">
-                  <span>Cuenta STAFF</span>
-                  <span className="text-emerald-600">/validate</span>
-                </div>
-
-                <div className="flex items-center justify-between rounded-2xl border border-gray-200 bg-white px-4 py-3">
-                  <span>Cuenta ADMIN</span>
-                  <span className="text-violet-600">/admin/bookings</span>
-                </div>
-              </div>
             </div>
-
-            <p className="mt-5 text-xs leading-6 text-gray-500">
-              Esta pantalla reutiliza el backend actual, el access token y el
-              refresh token ya existentes en tu proyecto.
-            </p>
           </div>
         </div>
       </section>

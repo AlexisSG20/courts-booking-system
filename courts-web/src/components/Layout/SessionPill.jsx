@@ -8,7 +8,7 @@ export default function SessionPill({ me, loading = false, onLogout }) {
   if (loading) {
     return (
       <div className="hidden rounded-2xl border border-slate-200/80 bg-white px-4 py-3 text-sm text-slate-600 lg:block">
-        {"Cargando sesi\u00f3n..."}
+        {"Cargando sesión..."}
       </div>
     );
   }

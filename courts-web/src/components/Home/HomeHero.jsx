@@ -20,7 +20,7 @@ export default function HomeHero() {
         <div>
           <div className="mb-4 flex flex-wrap gap-3">
             <span className="rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
-              {"Reserva r\u00e1pida"}
+              {"Reserva rápida"}
             </span>
             <span className="rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
               Token QR
@@ -41,7 +41,7 @@ export default function HomeHero() {
 
           <p className="mt-4 max-w-2xl text-base leading-7 text-slate-100/88 md:text-lg">
             {"Una experiencia moderna para reservas deportivas, con disponibilidad clara,"}
-            {" confirmaci\u00f3n inmediata y una interfaz pensada para sentirse como producto real."}
+            {" confirmación inmediata y una interfaz pensada para sentirse como producto real."}
           </p>
         </div>
 
@@ -57,7 +57,7 @@ export default function HomeHero() {
           </div>
 
           <div className="rounded-3xl border border-white/15 bg-white/10 p-5 backdrop-blur-md">
-            <p className="text-sm text-emerald-200">{"Gesti\u00f3n"}</p>
+            <p className="text-sm text-emerald-200">{"Gestión"}</p>
             <p className="mt-2 text-2xl font-semibold text-white">Vista admin</p>
           </div>
         </div>
