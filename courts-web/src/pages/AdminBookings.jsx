@@ -3,11 +3,11 @@ import { apiFetch } from "../lib/api";
 import { exportBookingsToExcel } from "../lib/exportExcel";
 import { getAccessToken, clearAccessToken } from "../lib/auth";
 
-import AdminHero from "../components/admin/AdminHero";
-import AdminFiltersCard from "../components/admin/AdminFiltersCard";
-import AdminStatsGrid from "../components/admin/AdminStatsGrid";
-import AdminCourtBreakdown from "../components/admin/AdminCourtBreakdown";
-import AdminBookingsTable from "../components/admin/AdminBookingsTable";
+import AdminHero from "../components/Admin/AdminHero";
+import AdminFiltersCard from "../components/Admin/AdminFiltersCard";
+import AdminStatsGrid from "../components/Admin/AdminStatsGrid";
+import AdminCourtBreakdown from "../components/Admin/AdminCourtBreakdown";
+import AdminBookingsTable from "../components/Admin/AdminBookingsTable";
 
 const API = "/api";
 const sidePanelBase =
@@ -312,14 +312,14 @@ export default function AdminBookings() {
         </div>
 
         {(from || to) && (
-          <div className="rounded-2xl border border-white/10 bg-white/6 px-4 py-3 text-sm text-slate-200/76 backdrop-blur-sm">
+          <div className="rounded-lg sm:rounded-2xl border border-white/10 bg-white/6 px-4 py-3 text-xs sm:text-sm text-slate-200/76 backdrop-blur-sm">
             Rango activo: <span className="font-semibold text-white">{from || "-"}</span> →{" "}
             <span className="font-semibold text-white">{to || "-"}</span>
           </div>
         )}
 
         {error && (
-          <div className="rounded-2xl border border-rose-400/24 bg-rose-400/10 px-4 py-3 text-sm text-rose-100">
+          <div className="rounded-lg sm:rounded-2xl border border-rose-400/24 bg-rose-400/10 px-4 py-3 text-xs sm:text-sm text-rose-100">
             {error}
           </div>
         )}
@@ -338,7 +338,7 @@ export default function AdminBookings() {
           <div>
             <button
               onClick={() => setCourtId("")}
-              className="rounded-2xl border border-white/12 bg-white/6 px-4 py-2 text-sm font-semibold text-white/84 transition hover:bg-white/10"
+              className="rounded-lg sm:rounded-2xl border border-white/12 bg-white/6 px-4 py-2 text-xs sm:text-sm font-semibold text-white/84 transition hover:bg-white/10"
             >
               Ver todas las canchas
             </button>

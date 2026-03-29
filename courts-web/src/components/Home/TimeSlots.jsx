@@ -22,29 +22,29 @@ export default function TimeSlots({
       <div className="absolute inset-0 bg-gradient-to-b from-slate-950/36 via-slate-950/42 to-slate-950/50 backdrop-blur-[0.6px]" />
       <div className="absolute inset-x-0 top-0 h-44 bg-gradient-to-r from-sky-400/8 via-emerald-300/6 to-transparent" />
 
-      <div className="relative z-10 p-7">
-        <div className="mb-7">
+      <div className="relative z-10 p-4 sm:p-6 lg:p-7">
+        <div className="mb-5 sm:mb-6 lg:mb-7">
           <p className="text-xs uppercase tracking-[0.3em] text-white/60">
             Disponibilidad
           </p>
-          <h2 className="mt-3 text-3xl font-semibold tracking-tight text-white">
+          <h2 className="mt-2 text-xl sm:text-2xl lg:text-3xl font-semibold tracking-tight text-white">
             Horas disponibles
           </h2>
-          <p className="mt-3 max-w-xl text-sm leading-7 text-slate-200/84">
+          <p className="mt-2 sm:mt-3 max-w-xl text-xs sm:text-sm leading-6 sm:leading-7 text-slate-200/84">
             Elige un bloque horario disponible para continuar con tu reserva.
           </p>
         </div>
 
         {loadingAvail ? (
-          <div className="rounded-3xl border border-dashed border-white/15 bg-slate-950/38 p-6 text-sm text-white/65 backdrop-blur-sm">
+          <div className="rounded-2xl sm:rounded-3xl border border-dashed border-white/15 bg-slate-950/38 p-4 sm:p-6 text-xs sm:text-sm text-white/65 backdrop-blur-sm">
             Cargando disponibilidad...
           </div>
         ) : available.length === 0 ? (
-          <div className="rounded-3xl border border-dashed border-white/15 bg-slate-950/38 p-6 text-sm text-white/65 backdrop-blur-sm">
+          <div className="rounded-2xl sm:rounded-3xl border border-dashed border-white/15 bg-slate-950/38 p-4 sm:p-6 text-xs sm:text-sm text-white/65 backdrop-blur-sm">
             No hay horas disponibles para esta fecha.
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
+          <div className="grid grid-cols-2 gap-2 sm:gap-3 lg:gap-4 sm:grid-cols-3 lg:grid-cols-4">
             {available.map((h) => {
               const isSelected = selectedHour === h;
 
@@ -54,7 +54,7 @@ export default function TimeSlots({
                   onClick={() => setSelectedHour(h)}
                   disabled={creating}
                   className={[
-                    "group relative overflow-hidden rounded-3xl border px-4 py-5 text-left transition duration-200 backdrop-blur-md",
+                    "group relative overflow-hidden rounded-2xl sm:rounded-3xl border px-3 sm:px-4 py-4 sm:py-5 text-left transition duration-200 backdrop-blur-md",
                     creating
                       ? "cursor-not-allowed opacity-60"
                       : "cursor-pointer hover:-translate-y-0.5 hover:border-emerald-400 hover:bg-slate-900/60 hover:shadow-md",
@@ -73,13 +73,13 @@ export default function TimeSlots({
                       Horario
                     </p>
 
-                    <p className="mt-2 text-2xl font-semibold tracking-tight text-white">
+                    <p className="mt-1 sm:mt-2 text-xl sm:text-2xl font-semibold tracking-tight text-white">
                       {h}:00
                     </p>
 
                     <p
                       className={[
-                        "mt-1 text-sm",
+                        "mt-1 text-xs sm:text-sm",
                         isSelected ? "text-emerald-100" : "text-slate-300/80",
                       ].join(" ")}
                     >

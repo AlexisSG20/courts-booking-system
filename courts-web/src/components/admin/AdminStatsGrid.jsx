@@ -8,14 +8,14 @@ function StatCard({ label, value, accent = "emerald", align = "left" }) {
   };
 
   return (
-    <div className="rounded-[26px] border border-white/12 bg-slate-950/44 p-5 shadow-[0_24px_80px_rgba(15,23,42,0.18)] backdrop-blur-md">
+    <div className="rounded-xl sm:rounded-2xl lg:rounded-[26px] border border-white/12 bg-slate-950/44 p-4 sm:p-5 shadow-[0_24px_80px_rgba(15,23,42,0.18)] backdrop-blur-md">
       <div
-        className={`mb-3 inline-flex rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.28em] ${accentMap[accent]}`}
+        className={`mb-2 sm:mb-3 inline-flex rounded-full border px-2 sm:px-3 py-1 text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.28em] ${accentMap[accent]}`}
       >
         {label}
       </div>
       <div
-        className={`text-3xl font-semibold tracking-tight text-white ${
+        className={`text-2xl sm:text-3xl font-semibold tracking-tight text-white ${
           align === "right" ? "text-right" : ""
         }`}
       >
@@ -27,7 +27,7 @@ function StatCard({ label, value, accent = "emerald", align = "left" }) {
 
 export default function AdminStatsGrid({ summary, money }) {
   return (
-    <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
+    <section className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-5">
       <StatCard label="Total reservas" value={summary.total} accent="cyan" />
       <StatCard label="Pendientes" value={summary.pending} accent="amber" />
       <StatCard label="Usadas" value={summary.used} accent="emerald" />

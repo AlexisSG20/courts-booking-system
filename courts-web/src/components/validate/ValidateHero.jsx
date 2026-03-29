@@ -14,7 +14,7 @@ const heroVisual = {
 
 export default function ValidateHero() {
   return (
-    <section className="relative isolate overflow-hidden rounded-[2rem] border border-white/16 shadow-[0_24px_80px_rgba(15,23,42,0.24)]">
+    <section className="relative isolate overflow-hidden rounded-xl sm:rounded-2xl lg:rounded-[2rem] border border-white/16 shadow-[0_24px_80px_rgba(15,23,42,0.24)]">
       <div
         className="absolute inset-0 scale-[1.02] bg-cover bg-no-repeat"
         style={heroVisual}
@@ -22,9 +22,9 @@ export default function ValidateHero() {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(56,189,248,0.16),transparent_26%),radial-gradient(circle_at_84%_18%,rgba(16,185,129,0.18),transparent_24%)]" />
       <div className="absolute inset-0 bg-gradient-to-r from-slate-950/76 via-slate-900/62 to-slate-900/44" />
 
-      <div className="relative grid gap-6 p-6 md:p-8 lg:grid-cols-[1.4fr_0.9fr]">
+      <div className="relative grid gap-5 sm:gap-6 p-4 sm:p-6 md:p-8 grid-cols-1 lg:grid-cols-[1.4fr_0.9fr]">
         <div>
-          <div className="mb-4 flex flex-wrap gap-2">
+          <div className="mb-3 sm:mb-4 flex flex-wrap gap-2">
             <span className="rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-emerald-100">
               Staff access
             </span>
@@ -36,35 +36,35 @@ export default function ValidateHero() {
             </span>
           </div>
 
-          <p className="mb-3 text-xs uppercase tracking-[0.35em] text-white/56">
+          <p className="mb-2 sm:mb-3 text-xs uppercase tracking-[0.35em] text-white/56">
             Courts Booking System
           </p>
 
-          <h1 className="max-w-3xl text-4xl font-semibold leading-tight text-white md:text-5xl">
+          <h1 className="max-w-3xl text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-semibold leading-tight text-white">
             Valida reservas por token o QR y registra el ingreso en segundos.
           </h1>
 
-          <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-200/84 md:text-base">
+          <p className="mt-3 sm:mt-4 max-w-2xl text-xs sm:text-sm lg:text-base leading-5 sm:leading-7 text-slate-200/84">
             Pantalla operativa para staff y administradores. Busca una reserva,
             escanea el QR desde camara y realiza el check-in con una interfaz
             clara, rapida y pensada como producto real.
           </p>
         </div>
 
-        <div className="grid gap-4">
-          <div className="rounded-3xl border border-white/12 bg-slate-950/34 p-5 backdrop-blur-sm">
-            <p className="text-sm text-emerald-200">Metodo</p>
-            <p className="mt-2 text-3xl font-semibold text-white">Token o QR</p>
+        <div className="grid gap-3 sm:gap-4">
+          <div className="rounded-2xl sm:rounded-3xl border border-white/12 bg-slate-950/34 p-4 sm:p-5 backdrop-blur-sm">
+            <p className="text-xs sm:text-sm text-emerald-200">Metodo</p>
+            <p className="mt-2 text-lg sm:text-2xl lg:text-3xl font-semibold text-white">Token o QR</p>
           </div>
 
-          <div className="rounded-3xl border border-white/12 bg-slate-950/34 p-5 backdrop-blur-sm">
-            <p className="text-sm text-sky-200">Uso</p>
-            <p className="mt-2 text-3xl font-semibold text-white">Check-in</p>
+          <div className="rounded-2xl sm:rounded-3xl border border-white/12 bg-slate-950/34 p-4 sm:p-5 backdrop-blur-sm">
+            <p className="text-xs sm:text-sm text-sky-200">Uso</p>
+            <p className="mt-2 text-lg sm:text-2xl lg:text-3xl font-semibold text-white">Check-in</p>
           </div>
 
-          <div className="rounded-3xl border border-white/12 bg-slate-950/34 p-5 backdrop-blur-sm">
-            <p className="text-sm text-white/56">Acceso</p>
-            <p className="mt-2 text-3xl font-semibold text-white">Staff / Admin</p>
+          <div className="rounded-2xl sm:rounded-3xl border border-white/12 bg-slate-950/34 p-4 sm:p-5 backdrop-blur-sm">
+            <p className="text-xs sm:text-sm text-white/56">Acceso</p>
+            <p className="mt-2 text-lg sm:text-2xl lg:text-3xl font-semibold text-white">Staff / Admin</p>
           </div>
         </div>
       </div>
