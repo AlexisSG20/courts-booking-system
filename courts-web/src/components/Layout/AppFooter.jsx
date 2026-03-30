@@ -7,7 +7,7 @@ export default function AppFooter() {
             Portfolio Project
           </p>
           <p className="mt-1 text-xs sm:text-sm font-semibold text-white">
-            Courts Booking System
+            Lozas Deportivas
           </p>
         </div>
 

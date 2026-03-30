@@ -16,7 +16,7 @@ export default function HomeHero() {
       <div className="absolute inset-0 bg-gradient-to-r from-slate-950/72 via-slate-900/58 to-slate-900/38" />
       <div className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-slate-950/34 to-transparent" />
 
-      <div className="relative z-10 grid gap-6 sm:gap-8 p-4 sm:p-6 lg:p-8 lg:p-10 grid-cols-1 lg:grid-cols-[1.3fr_0.7fr] lg:items-end">
+      <div className="relative z-10 grid gap-6 sm:gap-8 p-4 sm:p-6 lg:p-8 lg:p-10 grid-cols-1 lg:grid-cols-[1.3fr_0.7fr] lg:items-start">
         <div>
           <div className="mb-3 sm:mb-4 flex flex-wrap gap-2 sm:gap-3">
             <span className="rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-medium text-white backdrop-blur-sm">
@@ -31,7 +31,7 @@ export default function HomeHero() {
           </div>
 
           <p className="mb-2 sm:mb-3 text-xs uppercase tracking-[0.25em] text-white/70">
-            Courts Booking System
+            Lozas Deportivas
           </p>
 
           <h1 className="max-w-3xl text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold tracking-tight text-white">

@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
+import { buildApiUrl } from "../lib/api";
 import HomeHero from "../components/Home/HomeHero";
 import BookingFormCard from "../components/Home/BookingFormCard";
 import BookingConfirmation from "../components/Home/BookingConfirmation";
 import TimeSlots from "../components/Home/TimeSlots";
 import BookedHours from "../components/Home/BookedHours";
 
-const API = "/api";
 const sidePanelBase =
   "pointer-events-none absolute inset-y-0 z-0 hidden overflow-hidden xl:block";
 const sidePanelWidth = "clamp(10rem, calc((100vw - 80rem) / 2 + 2rem), 22rem)";
@@ -74,7 +74,7 @@ export default function Home() {
       setLoadingCourts(true);
 
       try {
-        const res = await fetch(`${API}/courts`);
+        const res = await fetch(buildApiUrl("/courts"));
         if (!res.ok) throw new Error("Error al cargar courts");
 
         const data = await res.json();
@@ -101,10 +101,10 @@ export default function Home() {
 
     try {
       const res = await fetch(
-        `${API}/availability?courtId=${encodeURIComponent(
-          currentCourtId
-        )}&date=${encodeURIComponent(currentDate)}`
-      );
+          `${buildApiUrl("/availability")}?courtId=${encodeURIComponent(
+            currentCourtId
+          )}&date=${encodeURIComponent(currentDate)}`
+        );
 
       if (!res.ok) {
         const err = await res.json().catch(() => null);

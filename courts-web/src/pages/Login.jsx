@@ -127,7 +127,7 @@ export default function Login({ onAuthChange, me }) {
                   admin + staff
                 </span>
                 <span className="rounded-full border border-white/12 bg-white/6 px-2.5 sm:px-3 py-1 text-[9px] sm:text-[10px] lg:text-[11px] uppercase tracking-[0.16em] text-white/65">
-                  courts booking system
+                  lozas deportivas
                 </span>
               </div>
 

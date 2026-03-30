@@ -31,7 +31,7 @@ export default function AdminHero() {
             </div>
 
             <p className="mb-2 sm:mb-3 text-xs uppercase tracking-[0.38em] text-white/56">
-              Courts Booking System
+              Lozas Deportivas
             </p>
 
             <h1 className="max-w-4xl text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-semibold leading-tight tracking-tight text-white">
