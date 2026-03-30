@@ -58,8 +58,19 @@ function getRedirectByRole(role) {
 export default function Login({ onAuthChange, me }) {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("admin@courts.com");
-  const [password, setPassword] = useState("Admin123*");
+  const DEMO_ACCOUNTS = {
+    STAFF: {
+      email: "staff@courts.com",
+      password: "staff123",
+    },
+    ADMIN: {
+      email: "admin@courts.com",
+      password: "admin123*",
+    },
+  };
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -67,6 +78,27 @@ export default function Login({ onAuthChange, me }) {
   useEffect(() => {
     setError("");
   }, [email, password]);
+
+  async function loginWithDemoAccount(role) {
+    const account = DEMO_ACCOUNTS[role];
+    if (!account || submitting) return;
+
+    setEmail(account.email);
+    setPassword(account.password);
+    setSubmitting(true);
+    setError("");
+
+    try {
+      const data = await login(account.email, account.password);
+      await onAuthChange?.();
+      const userRole = data?.user?.role;
+      navigate(getRedirectByRole(userRole), { replace: true });
+    } catch (err) {
+      setError(err?.message || "No se pudo iniciar sesión.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
   if (getAccessToken() && me?.role) {
     return <Navigate to={getRedirectByRole(me.role)} replace />;
@@ -260,19 +292,29 @@ export default function Login({ onAuthChange, me }) {
 
               <div className="mt-4 sm:mt-6 rounded-2xl sm:rounded-3xl border border-white/10 bg-slate-950/30 p-4 sm:p-5 backdrop-blur-sm">
                 <p className="text-[11px] sm:text-[12px] uppercase tracking-[0.3em] text-white/56">
-                  flujo esperado
+                  cuentas demo
                 </p>
 
-                <div className="mt-3 sm:mt-4 space-y-2 sm:space-y-3 text-xs sm:text-sm text-slate-200/82">
-                  <div className="flex items-center justify-between rounded-lg sm:rounded-2xl border border-white/10 bg-white/6 px-3 sm:px-4 py-2 sm:py-3">
-                    <span>Cuenta STAFF</span>
+                <div className="mt-3 sm:mt-4 space-y-2 sm:space-y-3 text-xs sm:text-sm">
+                  <button
+                    type="button"
+                    onClick={() => loginWithDemoAccount("STAFF")}
+                    disabled={submitting}
+                    className="flex w-full cursor-pointer items-center justify-between rounded-lg sm:rounded-2xl border border-emerald-400/20 bg-emerald-400/10 px-3 sm:px-4 py-2 sm:py-3 text-left transition hover:border-emerald-300/35 hover:bg-emerald-400/14 disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    <span className="text-emerald-100">Cuenta STAFF</span>
                     <span className="text-emerald-300">/validate</span>
-                  </div>
+                  </button>
 
-                  <div className="flex items-center justify-between rounded-lg sm:rounded-2xl border border-white/10 bg-white/6 px-3 sm:px-4 py-2 sm:py-3">
-                    <span>Cuenta ADMIN</span>
+                  <button
+                    type="button"
+                    onClick={() => loginWithDemoAccount("ADMIN")}
+                    disabled={submitting}
+                    className="flex w-full cursor-pointer items-center justify-between rounded-lg sm:rounded-2xl border border-sky-400/20 bg-sky-400/10 px-3 sm:px-4 py-2 sm:py-3 text-left transition hover:border-sky-300/35 hover:bg-sky-400/14 disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    <span className="text-sky-100">Cuenta ADMIN</span>
                     <span className="text-sky-300">/admin/bookings</span>
-                  </div>
+                  </button>
                 </div>
               </div>
 
