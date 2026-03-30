@@ -40,7 +40,7 @@ const heroVisual = {
 const INITIAL_MESSAGE = {
   id: crypto.randomUUID(),
   role: "assistant",
-  text: "Hola. Soy la demo conversacional del Courts Booking System. Puedo ayudarte con consultas operativas sobre reservas, usuarios y canchas.",
+  text: "Hola. Soy la demo conversacional de Lozas Deportivas. Puedo ayudarte con consultas operativas sobre reservas, usuarios y canchas.",
 };
 
 const SUGGESTED_PROMPTS = [
@@ -182,7 +182,7 @@ export default function AIDemo() {
 
             <div className="space-y-4">
               <p className="text-xs uppercase tracking-[0.32em] text-white/56">
-                Courts Booking System
+                Lozas Deportivas
               </p>
 
               <h1 className="max-w-4xl text-4xl font-semibold tracking-tight text-white sm:text-5xl">

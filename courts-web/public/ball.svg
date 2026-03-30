@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Balon de futbol">
+  <defs>
+    <radialGradient id="ballBase" cx="34%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="72%" stop-color="#f8fafc" />
+      <stop offset="100%" stop-color="#dbe4ee" />
+    </radialGradient>
+    <linearGradient id="shadowEdge" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#334155" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+  </defs>
+
+  <circle cx="50" cy="50" r="45" fill="url(#ballBase)" stroke="url(#shadowEdge)" stroke-width="3" />
+  <ellipse cx="37" cy="30" rx="16" ry="10" fill="#ffffff" opacity="0.45" />
+
+  <polygon
+    points="50,28 61,36 57,49 43,49 39,36"
+    fill="#111827"
+    stroke="#e5e7eb"
+    stroke-width="1.6"
+    stroke-linejoin="round"
+  />
+
+  <g fill="none" stroke="#374151" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M50 28 L50 16" />
+    <path d="M39 36 L28 28" />
+    <path d="M61 36 L72 28" />
+    <path d="M43 49 L34 61" />
+    <path d="M57 49 L66 61" />
+    <path d="M28 28 C20 37 18 47 22 58" />
+    <path d="M72 28 C80 37 82 47 78 58" />
+    <path d="M34 61 C41 68 59 68 66 61" />
+    <path d="M22 58 C28 71 41 79 50 82" />
+    <path d="M78 58 C72 71 59 79 50 82" />
+  </g>
+</svg>

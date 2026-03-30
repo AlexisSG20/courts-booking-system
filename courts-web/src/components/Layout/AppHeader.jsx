@@ -20,6 +20,7 @@ function NavLinkItem({ to, children, isActive }) {
 
 export default function AppHeader({ me, pathname, authLoading, onLogout }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const showSession = Boolean(me || authLoading);
 
   const navItems = [
     { to: "/", label: "Reservar" },
@@ -32,19 +33,36 @@ export default function AppHeader({ me, pathname, authLoading, onLogout }) {
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/90 backdrop-blur-xl">
       <div className="mx-auto w-full max-w-7xl px-4 py-3 sm:py-4 md:py-5 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between gap-4">
+        <div
+          className={[
+            "flex items-center justify-between gap-4",
+            showSession ? "lg:grid lg:grid-cols-[auto_1fr_auto]" : "",
+          ].join(" ")}
+        >
           {/* Logo */}
-          <div className="min-w-0">
-            <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.32em] text-slate-500">
-              Portfolio Project
-            </p>
-            <p className="mt-0.5 sm:mt-1 text-xs sm:text-sm font-semibold text-slate-950">
-              Courts Booking System
-            </p>
+          <div className="min-w-0 flex items-center gap-2.5 sm:gap-3">
+            <img
+              src="/ball.svg?v=3"
+              alt="Pelota deportiva"
+              className="h-9 w-9 rounded-full border border-slate-200 bg-white p-1 shadow-sm"
+            />
+            <div>
+              <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.32em] text-slate-500">
+                Sistema de reservas
+              </p>
+              <p className="mt-0.5 sm:mt-1 text-xs sm:text-sm font-semibold text-slate-950">
+                Lozas Deportivas
+              </p>
+            </div>
           </div>
 
           {/* Desktop Nav */}
-          <nav className="hidden flex-1 lg:flex items-center justify-center gap-2">
+          <nav
+            className={[
+              "hidden lg:flex items-center gap-2",
+              showSession ? "justify-self-center justify-center" : "ml-auto justify-end",
+            ].join(" ")}
+          >
             {navItems.map(({ to, label }) => (
               <NavLinkItem key={to} to={to} isActive={pathname === to}>
                 {label}
@@ -70,7 +88,7 @@ export default function AppHeader({ me, pathname, authLoading, onLogout }) {
 
             {/* Desktop Session Pill */}
             <div className="hidden lg:block">
-              {me || authLoading ? (
+              {showSession ? (
                 <SessionPill me={me} loading={authLoading} onLogout={onLogout} />
               ) : null}
             </div>
