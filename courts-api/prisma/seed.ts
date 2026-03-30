@@ -30,31 +30,31 @@ async function main() {
     console.log(`Court created/updated: ${court.name}`);
   }
 
-  // 2) Crear admin inicial (si no existe)
+   // 2) Crear o actualizar admin inicial
   const adminEmail = process.env.ADMIN_EMAIL;
   const adminPassword = process.env.ADMIN_PASSWORD;
 
   if (!adminEmail || !adminPassword) {
-    console.log('⚠️ Falta ADMIN_EMAIL o ADMIN_PASSWORD en .env (no se creó admin)');
+    console.log('⚠️ Falta ADMIN_EMAIL o ADMIN_PASSWORD en .env (no se creó/actualizó admin)');
   } else {
-    const exists = await prisma.user.findUnique({ where: { email: adminEmail } });
+    const passwordHash = await argon2.hash(adminPassword);
 
-    if (exists) {
-      console.log(`Admin ya existe: ${adminEmail}`);
-    } else {
-      const passwordHash = await argon2.hash(adminPassword);
+    await prisma.user.upsert({
+      where: { email: adminEmail },
+      update: {
+        passwordHash,
+        role: Role.ADMIN,
+        isActive: true,
+      },
+      create: {
+        email: adminEmail,
+        passwordHash,
+        role: Role.ADMIN,
+        isActive: true,
+      },
+    });
 
-      await prisma.user.create({
-        data: {
-          email: adminEmail,
-          passwordHash,
-          role: Role.ADMIN,
-          isActive: true,
-        },
-      });
-
-      console.log(`✅ Admin creado: ${adminEmail}`);
-    }
+    console.log(`✅ Admin creado/actualizado: ${adminEmail}`);
   }
 
   // 3) Crear usuario STAFF inicial
